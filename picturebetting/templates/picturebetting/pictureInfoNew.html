@@ -1,0 +1,79 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+Information For Betting Decisions {{roundnumber}} out of {{Constants.num_rounds}}:
+{% endblock %}
+
+{% block content %}
+
+	<div>
+<!--		<img src="data:image/png;base64 {{png}}"  style="margin:0 auto; border: 10px solid CadetBlue;"/> -->
+	<img src="data:image/png;base64,{{png}}" class="ImageBorder"/> 
+
+	</div>
+
+<p class="bottom-three">
+   If you need to remind yourself, in a <b> good </b> picture, there are {{Constants.majoritywords}} words from the "good" list below and {{Constants.minoritywords}} from the "bad" list below. In a <b> bad </b> picture there are {{Constants.majoritywords}} from the "bad" list below and {{Constants.minoritywords}} from the "good" list below. In case you need to check, here are the three lists again:
+</p>
+
+<table>
+  <tr>
+    <th>Good Words &emsp;  </th>
+    <th>Bad Words &emsp; </th> 
+    <th>Neutral words</th>
+  </tr>
+
+  {% for good, bad, neutral in  list_dictionary %}
+      <tr> 
+      	 <td> {{good}} </td> 
+         <td> {{bad}}  </td>
+         <td> {{neutral}} </td>
+      </tr>
+  {% endfor %}
+
+</table>
+
+<p> 
+</p>
+
+    {% next_button %}
+
+{% endblock %}
+
+
+{% block styles %}
+
+<style type="text/css">
+img.ImageBorder
+{
+    border:10px solid CadetBlue; border-radius: 8px;
+}
+</style>
+
+
+
+<style>
+  .bottom-three {
+     margin-top: 1cm;
+  }
+
+  table { border-collapse: collapse; 
+    border: 1px solid black;}
+tr { border: none; }
+td, th {
+  border-right: 1px solid black; 
+  border-left: 1px solid black;
+  padding: 2px;
+  text-align: center;
+}
+th {
+  border-bottom: 1px solid black;
+}
+
+
+</style>
+
+    
+
+{% endblock %}

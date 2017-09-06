@@ -1,0 +1,43 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+
+{% block title %}
+Details on the Payment Procedure -- Skip if you are not interested to know!
+{% endblock %}
+
+{% block content %}
+
+
+<p>
+	<b>You will not be quizzed on this information. </b> We only provide this information in case you are interested in knowing how to construct what economists call "incentive compatible elicitation mechanisms"!
+</p> 
+
+<p>
+	The payment procedure for this part is as follows: 
+</p>
+<ul>
+<li> You have selected your estimate of how likely it is that the picture is good as some number, say, 75%. </li> 
+<li> The computer then proceeds to generate a random number between 0 and 100. </li>
+<li> The computer compares the number to your estimate. </li>
+<li>If the randomly generated number is higher than your estimate, then the computer proceeds to generate a second random number between 0 and 100. 
+		<ul> <li> If the first random number is larger than the second random number, you will receive a bonus of {{Constants.bonus}}. </li>
+		<li>      If the second random number is larger than the first, you do not receive the bonus. </li></ul></li>
+<li> If the randomly generated number is smaller than your estimate, you receive 
+	<ul> <li> {{Constants.bonus}} if the picture is good... </li> <li> and no bonus if the picture is bad. </li> </ul> </li>
+</ul>
+    
+Why does this (complicated!) system ensure that you should be tellign the truth? Imagine you thought that the picture was true and you were sure to about 85%. However, instead of selecting 85% with the slider you select 65%. What happens next? 
+
+<ul>
+	<li> Imagine the computer generates a number between 65 and 85, such as 75%.  </li>
+	<li> Because 75 is larger than 65, the computer triggers the first of the two cases above: it generates a <b> second </b> random number and compares the second random number to the first one. </li>
+	<li> Now, if the second random number was higher than 75 (which happens with 25% probability), you will not receive any extra money. </li> 
+</ul>
+
+<p> This is, of course, a bad deal for you: you thought the picture was good with 85% and now you only get the prize with 75%! Had you told the truth and selected 85%, then the computer would have triggered the second of the two cases and you would have been paid if the picture was indeed good. But if you truly believe that this is the case with 85%, you should prefer this over getting the {{Constants.bonus}} bonus with 75% probability! </p>
+ 
+
+    {% next_button %}
+
+{% endblock %}

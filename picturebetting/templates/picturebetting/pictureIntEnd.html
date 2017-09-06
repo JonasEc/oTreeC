@@ -1,0 +1,22 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+
+{% block title %}
+Your choice has been recorded! Thank you!
+{% endblock %}
+
+{% block content %}
+
+    <p>
+    You have now completed the main part of the experiment </p>
+
+    <p>
+    You will now proceed to a short survey. Recall, <b> you need to complete all questions in this survey to be paid any bonus payments!</b>.
+    </p>
+
+	    {% next_button %}
+
+ 
+
+{% endblock %}

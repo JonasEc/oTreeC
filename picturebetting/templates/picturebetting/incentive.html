@@ -1,0 +1,44 @@
+<!-- <p> Recall that when you bet on a picture and the picture is selected to count for your payment, we will donate to {{mincharname}} on your behalf for sure. You, however, will lose money if the picture is bad. If you do lose money you will earn {{Constants.cost}} less than your base payment of {{Constants.base}}. To repeat, if you bet on the picture, the picture is selected to count for payment, and the picture turns out to be bad, you will earn {{Constants.basewithcost}}. This is the same for all pictures. A donation of {{charpayoff}} is made regardless of the picture quality if you decide to bet and this picture is selected for payment.</p>
+
+<p> <b> If you bet on THIS picture, we will donate {{charpayoff}} to {{mincharname}} if the picture is selected for payment</b> .</p>
+
+<p> To summarise payoffs in case the picture is selected for payment once more, look at the following table: </p> -->
+
+<!-- <p> If the picture is randomly selected for payment, this will be your payoff and our donation to charity: </p> -->
+
+ 
+<table class="table1" align = "center">
+  <tr>
+    <th>IF YOU BET</th>
+    <th>Good Picture &emsp;</th> 
+    <th>Bad Picture</th>
+  </tr>
+  <tr>
+    <td> <b> Payout for you &emsp; </b> </td>
+    <td> <b>  {{Constants.base}} </b> </td> 
+    <td> <b>  {{Constants.basewithcost}} </b> </td>
+  </tr>
+  <tr>
+    <td> <b>  Donation to {{mincharname}} &emsp; </b> </td>
+    <td> <b> {{charpayoff}} </b> </td> 
+    <td> <b> {{charpayoff}} </b> </td>
+  </tr>
+</table>
+
+<table class="table2" align = "center">
+  <tr>
+    <th>IF YOU DON'T BET</th>
+    <th>Good Picture &emsp;</th> 
+    <th>Bad Picture</th>
+  </tr>
+  <tr>
+    <td> <b> Payout for you &emsp; </b> </td>
+    <td> <b>  {{Constants.base}} </b> </td> 
+    <td> <b>  {{Constants.base}} </b> </td>
+  </tr>
+  <tr>
+    <td> <b>  Donation to {{mincharname}} &emsp; </b> </td>
+    <td> <b> $0.00 </b> </td> 
+    <td> <b> $0.00 </b> </td>
+  </tr>
+</table>
