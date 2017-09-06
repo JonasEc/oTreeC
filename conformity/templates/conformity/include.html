@@ -1,0 +1,7 @@
+<ul>
+<li>In each of {{Constants.num_rounds}} rounds, you will decide how many minutes you want to volunteer to make money for Make-A-Wish Foundation to help children in a particular city in Texas.  You will also make your best guess concerning the median number of minutes the other subjects will choose to volunteer in that round.
+{% if Constants.public %}<li>At the start of every round after the first, you will be told the median number of minutes chosen by other subjects in the previous round.{% endif %}
+<li>{% if Constants.public %}At the end of all 10 rounds, one round will be chosen at random.  Everyone will reveal the number of minutes they decided to stay in that round to everyone else, by wearing nametags with that information, and by lining up in the front of the room from lowest to highest number of minutes.{% else %}Everyone's decisions about how long they chose to stay will remain anonymous.{% endif %}
+<li>One person will be chosen at random from the selected round, and their choice will be implemented: they will have to wait for the amount of time they indicated, and we will make the associated contribution to Make-A-Wish-Foundation.
+<li>You will receive a {{Constants.bonus}} bonus on top of your {{Constants.showup}} participation fee if, for the selected round, you guessed the median number of minutes for the other participants correctly.
+</ul>
