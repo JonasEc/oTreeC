@@ -46,7 +46,7 @@ class Constants(BaseConstants):
 	bonus = c(3)
 
 ### TIMER:
-	timerPractice = 180
+	timerPractice = 15
 
 
 

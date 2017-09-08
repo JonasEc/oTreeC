@@ -157,12 +157,12 @@ class ResultsWaitPage(WaitPage):
 				player.participant.vars["committedMinutes"] = player.commitWait()
 
 page_sequence = [
-	# welcome,
-	# IRB,
-	# instructions,
-	# quizz,
-	# quizzWaitPage,
-	# practice,
+	welcome,
+	IRB,
+	instructions,
+	quizz,
+	quizzWaitPage,
+	practice,
 	commit,
 	ResultsWaitPage,
 	feedback,
