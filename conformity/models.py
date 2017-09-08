@@ -72,8 +72,8 @@ class Group(BaseGroup):
 class Player(BasePlayer):
 ####### QUIZZ 
 	truefalse1 = models.PositiveIntegerField(verbose_name="How many of your decisions, at most, will count for payment?")
-	truefalse2 = models.BooleanField(choices=[[1, 'True'],[0, 'False']],widget=widgets.RadioSelect(),verbose_name=("Before you make your decisions in Rounds 2 through" + str(Constants.num_rounds) +" " +", will you know the some information about the decisions made in the previous round?"))
-	truefalse3 = models.BooleanField(choices=[[1, 'True'],[0, 'False']],widget=widgets.RadioSelect(),verbose_name=("Before making their decisions in Rounds 2 through" + str(Constants.num_rounds) +" " +", will others know your decision in particular in previous rounds?"))
+	truefalse2 = models.BooleanField(choices=[[1, 'True'],[0, 'False']],widget=widgets.RadioSelect(),verbose_name=(" ".join(["Before you make your decisions in Rounds 2 through" + " " +str(Constants.num_rounds) +", will you know the some information about the decisions made in the previous round?"))
+	truefalse3 = models.BooleanField(choices=[[1, 'True'],[0, 'False']],widget=widgets.RadioSelect(),verbose_name=("Before making their decisions in Rounds 2 through" + " " +str(Constants.num_rounds) +", will others know your decision in particular in previous rounds?"))
 	truefalse4 = models.BooleanField(choices=[[1, 'True'],[0, 'False']],widget=widgets.RadioSelect(),verbose_name="After all decisions are made, will others in this room learn your decision from the selected round?")
 	truefalse5 = models.BooleanField(choices=[[1, 'True'],[0, 'False']],widget=widgets.RadioSelect(),verbose_name="After all decisions are made, will others in this room learn your decisions from the rounds that were not selected?")
 	truefalse6 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'None of the above']],widget=widgets.RadioSelect(),verbose_name="If you ARE the selected participant, your earnings for Make-A-Wish Foundation will depend on:")

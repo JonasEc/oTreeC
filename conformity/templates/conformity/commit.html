@@ -17,7 +17,7 @@ Your commitment decision for {{charity}}:
     <th>Time To Wait</th>
     <th>Donation Earned</th>
   </tr>
-  {% for i in listCommits1%} =  <tr>
+  {% for i in listCommits1%} <tr>
     <td>{{forloop.counter}} {%if forloop.first %}minute{% else %}minutes{% endif %} </td>
     <td>{{i}} </td>
   </tr> {% endfor %}
@@ -28,7 +28,7 @@ Your commitment decision for {{charity}}:
     <th>Time To Wait</th>
     <th>Donation Earned</th>
   </tr>
-  {% for i in listCommits2%} = <tr>
+  {% for i in listCommits2%} <tr>
     <td>{{forloop.counter|add:"12"}} minutes </td>
     <td>{{i}} </td>
   </tr> {% endfor %}
@@ -39,7 +39,7 @@ Your commitment decision for {{charity}}:
     <th>Time To Wait</th>
     <th>Donation Earned</th>
   </tr>
-  {% for i in listCommits3%} = <tr>
+  {% for i in listCommits3%}<tr>
     <td>{% if forloop.last %} &nbsp; {% else %} {{forloop.counter|add:"24"}} minutes {% endif %}</td>
     <td>{% if forloop.last %} &nbsp; {% else %} {{i}} {% endif %} </td>
   </tr> {% endfor %}
