@@ -11,7 +11,7 @@
 
 <p> The selected round is Round {{round}}. </p>
 
-<p> In this round, you commited to wait for <b>{{committedMin}} minutes</b>. </p>
+<p> In this round, you commited to wait for <b>{{committedMin}} {% ifequal comittedMin one %} minute {% else %} minutes {% endifequal %}</b>. </p>
 
 <p> Hence, you will now wait for <b>{{committed}} seconds</b> without doing anything while waiting. </p>
 

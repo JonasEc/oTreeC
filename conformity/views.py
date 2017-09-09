@@ -55,11 +55,15 @@ class quizz(Page):
 			summand = 0
 			return 'Almost there! You just got one question wrong!'
 
+
 class practice(Page):
 	def is_displayed(self):
 		return self.round_number == 1	
 	timeout_seconds = Constants.timerPractice
 	timer_text = "Time left to wait:"
+
+
+
 
 #### MAIN PAGES
 
@@ -74,11 +78,22 @@ class commit(Page):
 		self.player.participant.vars[nameC] = self.player.commitment
 		self.player.participant.vars[nameB] = self.player.belief
 
+class confidence(Page):
+	form_model = models.Player 
+	form_fields = ['confidence']
+	def vars_for_template(self):
+		return {"one": 1, "left_side": Constants.confidenceBonus, "right_side": Constants.confidenceBonus, "right_side_amounts": Constants.right_side_amounts, 'belief': self.player.belief}
+	def before_next_page(self):
+		nameC = "confidence" + str(self.round_number)
+		self.player.participant.vars[nameC] = self.player.confidence
+
+
 class feedback(Page):
 	def is_displayed(self):
 		return Constants.feedback and self.round_number < Constants.num_rounds
 	def vars_for_template(self):
 		return {"median": self.player.calcmedian(),  "one": 1, "money": Constants.money[self.player.calcmedian()-1], "charity":Constants.charities[self.round_number-1]}
+
 
 class feedbackLast(Page):
 	def is_displayed(self):
@@ -87,21 +102,29 @@ class feedbackLast(Page):
 		return {"median": self.player.calcmedian(), "one": 1, "money": Constants.money[self.player.calcmedian()-1], "charity":Constants.charities[self.round_number-1]}
 
 
+class publicWaitingInstructions(Page):
+	def is_displayed(self):
+		return self.round_number == Constants.num_rounds  and Constants.public == True
+	def vars_for_template(self):
+		return {"one": 1, "committed": self.player.participant.vars.get("committedMinutes")*60,"committedMin": self.player.participant.vars.get("committedMinutes"), "money": Constants.money[self.player.timeMinutes -1],"round": self.session.vars.get("selectedRound"), "charity":Constants.charities[self.session.vars.get("selectedRound")-1] }
+
+
 class waiting(Page):
 	def is_displayed(self):
 		return self.round_number == Constants.num_rounds and self.player.id_in_group == self.session.vars.get("selectedPlayer")
-
 	timer_text = "Time left to wait:"	
 	def get_timeout_seconds(self):	
 		return self.player.participant.vars.get("committedMinutes")*60
-
 	def vars_for_template(self):
-		return {"committed": self.player.participant.vars.get("committedMinutes")*60,"committedMin": self.player.participant.vars.get("committedMinutes"), "money": Constants.money[self.player.timeMinutes -1],"round": self.session.vars.get("selectedRound"), "charity":Constants.charities[self.session.vars.get("selectedRound")-1] }
+		return {"one": 1, "committed": self.player.participant.vars.get("committedMinutes")*60,"committedMin": self.player.participant.vars.get("committedMinutes"), "money": Constants.money[self.player.timeMinutes -1],"round": self.session.vars.get("selectedRound"), "charity":Constants.charities[self.session.vars.get("selectedRound")-1] }
 
 
 class notwaiting(Page):
 	def is_displayed(self):
 		return self.round_number == Constants.num_rounds and self.player.id_in_group != self.session.vars.get("selectedPlayer")
+
+
+
 
 
 ##### SURVEY PAGES
@@ -128,15 +151,19 @@ class payment(Page):
 	def is_displayed(self):
 		return self.round_number == Constants.num_rounds
 	def vars_for_template(self):
-		if self.player.payoff > Constants.showup:
-			extra = True
+		if self.player.payoff == Constants.showup + Constants.bonus or Constants.showup + Constants.bonus + Constants.confidenceBonus:
+			extra1 = True
 		else:
-			extra = False
+			extra1 = False
+		if self.player.payoff == Constants.showup + Constants.confidenceBonus or Constants.showup + Constants.bonus + Constants.confidenceBonus:
+			extra2 = True
+		else:
+			extra2 = False
 		if self.session.vars.get("selectedPlayer") == self.player.id_in_group:
 			waiting = True
 		else:
 			waiting = False
-		return {"payment": self.player.payoff, "extra": extra, "waiting": waiting, "round": self.session.vars.get("selectedRound"), "charity": Constants.charities[self.session.vars.get("selectedRound")-1], "money": Constants.money[self.player.timeMinutes -1]} 	
+		return {"payment": self.player.payoff, "extra1": extra1, "extra2": extra2, "waiting": waiting, "round": self.session.vars.get("selectedRound"), "charity": Constants.charities[self.session.vars.get("selectedRound")-1], "money": Constants.money[self.player.timeMinutes -1]} 	
 
 
 
@@ -164,9 +191,11 @@ page_sequence = [
 	quizzWaitPage,
 	practice,
 	commit,
+	confidence,
 	ResultsWaitPage,
 	feedback,
 	feedbackLast,
+	publicWaitingInstructions,
 	waiting,
 	notwaiting,
 	survey1,

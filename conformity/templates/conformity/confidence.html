@@ -1,0 +1,107 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+
+{% block title %}
+How confident are you in your guess?
+{% endblock %}
+
+
+{% block content %}
+
+<p> Please tell us how confident you are in your guess that the median commitment by all players OTHER THAN YOU in this round is <b>{{belief}} </b> {% ifequal comittedMin one %} minute {% else %} minutes {% endifequal %} of waiting. </p>
+
+<p>Think of each of the rows of the table below as asking: "Would you rather receive {{Constants.confidenceBonus}} if your guess of the median is correct or would you rather receive {{Constants.confidenceBonus}} with [X%] probability?" </p>
+
+<p> If you select an entry on the left hand side, we will pay you {{left_side}} if your guess is exactly correct, if this round is selected for payment. If you select an entry on the right hand side, the computer will pay you an extra {{right_side}} with the probability indicated in each field, if this round is selected for payment. </p>
+
+
+    <table class="table table-striped">
+        <colgroup>
+            <col width="45%">
+            <col width="10%">
+            <col width="45%">
+        </colgroup>
+        <tr>
+            <td align="right"><b>Option A</b></td>
+            <td></td>
+            <td align="left"><b>Option B</b></td>
+        </tr>
+        {% for amount in right_side_amounts %}
+            <tr>
+                <td align="right">
+                    Extra <b>{{left_side}}</b> if guess of <b>{{belief}}{% ifequal comittedMin one %} minute {% else %} minutes {% endifequal %} </b> is exactly <b>correct</b> </td>
+                <td align="middle">
+                    <input type="radio" name="amount_{{ amount|json }}" value="left"
+                           required>&nbsp;&nbsp;
+                    <input type="radio" name="amount_{{ amount|json }}"
+                           value="right" data-amount="{{ amount|json }}" required>
+                </td>
+                <td align="left">
+                    Extra <b> {{right_side}}</b> with <b>{{amount}}% probability</b>  </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+    {{ form.errors }}
+    <input type="hidden" name="confidence" id="switchpoint"
+           value="9999">
+           
+    {% next_button %}
+
+
+{% endblock %}          
+
+
+{% block scripts %}
+<script>
+$(document).ready(function () {
+    $('input[type=radio]').change(
+            function () {
+                var clickedRadio = this;
+                var afterClickedRadio = false;
+                var clickedNumber = 100;
+
+                var radios = document.querySelectorAll('input[type=radio]');
+
+                for (i = 0; i < radios.length; ++i) {
+                    var radio = radios[i];
+                    if (radio == clickedRadio) {
+                        afterClickedRadio = true;
+                        continue;
+                    }
+                    if (!afterClickedRadio  && radio.value == 'left') {
+                        radio.checked = true;
+                    }
+                    if (afterClickedRadio && radio.value == 'right' ) {
+                        radio.checked = true;
+                    }
+                }
+                for (i = 0; i < radios.length; ++i) {
+                    var radio = radios[i];
+                    if (radio == clickedRadio) {
+                        radio.checked = true;
+                    }
+                }
+            }
+    );
+});
+
+    $('button').click(function() {
+        var radios = document.querySelectorAll('input[type=radio]');
+
+
+        for (i = 0; i < radios.length; ++i) {
+            var radio = radios[i];
+            if (radio.value == 'right' && radio.checked) {
+                $('#switchpoint').val(radio.dataset.amount);
+                break;
+            } else {
+                $('#switchpoint').val(9999);
+            }
+        }
+    });
+
+</script>
+{% endblock %}

@@ -44,6 +44,10 @@ class Constants(BaseConstants):
 	money = [c(3.72),c(5.72),c(6.72),c(7.67),c(8.57),c(9.42),c(10.22),c(10.97),c(11.67),c(12.32),c(12.92),c(13.47),c(13.97),c(14.42),c(14.82),c(15.17),c(15.47),c(15.72),c(15.92),c(16.07),c(16.17),c(16.26),c(16.34),c(16.41),c(16.47),c(16.52),c(16.56),c(16.59),c(16.61),c(16.62),c(16.62),c(16.63),c(16.63),c(16.63),c(16.64),c(16.64) ]
 	showup = c(20)
 	bonus = c(3)
+	confidenceBonus =c(5)
+
+	r = list(np.linspace(10,100,10))
+	right_side_amounts = [int(k) for k in r]
 
 ### TIMER:
 	timerPractice = 15
@@ -72,20 +76,22 @@ class Group(BaseGroup):
 class Player(BasePlayer):
 ####### QUIZZ 
 	truefalse1 = models.PositiveIntegerField(verbose_name="How many of your decisions, at most, will count for payment?")
-	truefalse2 = models.BooleanField(choices=[[1, 'True'],[0, 'False']],widget=widgets.RadioSelect(),verbose_name=("Before you make your decisions in Rounds 2 through" + " " +str(Constants.num_rounds) +", will you know the some information about the decisions made in the previous round?"))
+	truefalse2 = models.BooleanField(choices=[[1, 'True'],[0, 'False']],widget=widgets.RadioSelect(),verbose_name=("Before you make your decisions in Rounds 2 through" + " " +str(Constants.num_rounds) +", will you know some information about the decisions made in the previous round?"))
 	truefalse3 = models.BooleanField(choices=[[1, 'True'],[0, 'False']],widget=widgets.RadioSelect(),verbose_name=("Before making their decisions in Rounds 2 through" + " " +str(Constants.num_rounds) +", will others know your decision in particular in previous rounds?"))
 	truefalse4 = models.BooleanField(choices=[[1, 'True'],[0, 'False']],widget=widgets.RadioSelect(),verbose_name="After all decisions are made, will others in this room learn your decision from the selected round?")
 	truefalse5 = models.BooleanField(choices=[[1, 'True'],[0, 'False']],widget=widgets.RadioSelect(),verbose_name="After all decisions are made, will others in this room learn your decisions from the rounds that were not selected?")
 	truefalse6 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'None of the above']],widget=widgets.RadioSelect(),verbose_name="If you ARE the selected participant, your earnings for Make-A-Wish Foundation will depend on:")
 	truefalse7 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'No additional time']],widget=widgets.RadioSelect(),verbose_name="If you ARE the selected participant, you will have to wait:")
 	truefalse8 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'None of the above']],widget=widgets.RadioSelect(),verbose_name="If you ARE NOT the selected participant, your earnings for Make-A-Wish Foundation will depend on:")
-	truefalse9 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'No additional time']],widget=widgets.RadioSelect(),verbose_name="If you ARE the selected participant, you will have to wait:")
+	truefalse9 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'No additional time']],widget=widgets.RadioSelect(),verbose_name="If you ARE NOT the selected participant, you will have to wait:")
 
 
 ######## ACTUAL DATA COLLECTED
 	commitment = models.PositiveIntegerField(min=0,max=35)
 
 	belief = models.PositiveIntegerField(min=0,max=35)
+
+	confidence = models.PositiveIntegerField()
 
 	medianCommitment = models.PositiveIntegerField()
 	timeMinutes = models.PositiveIntegerField()
@@ -106,7 +112,7 @@ class Player(BasePlayer):
 
 ######## Survey
 	impactBelief   = models.PositiveIntegerField(verbose_name="My choices were impacted by what I THOUGHT other participants chose.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
-	impactKnow     = models.PositiveIntegerField(verbose_name="My choices were impacted by much I KNEW other participants chose.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
+	impactKnow     = models.PositiveIntegerField(verbose_name="My choices were impacted by how much I KNEW other participants chose.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
 	impactLocation = models.PositiveIntegerField(verbose_name="My choices were impacted by the different locations of the Make-A-Wish Foundation across rounds.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
 	impactTexas    = models.PositiveIntegerField(verbose_name="My choices were impacted by the fact that the Make-A-Wish Foundation locations involved in this study were in Texas, as opposed to some other state in the U.S.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
 	impactFair     = models.PositiveIntegerField(verbose_name="My choices were impacted by what I thought was fair.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
@@ -129,15 +135,32 @@ class Player(BasePlayer):
 		roundN = str(self.session.vars.get("selectedRound")) 
 		nameB = "belief" + roundN
 		nameM = "median" + roundN
+		nameC = "confidence" + roundN
 
 		beliefOfSelectedRound = self.participant.vars.get(nameB)
 		medianInSelectedRound = self.participant.vars.get(nameM)
+		confidenceOfSelectedRound = self.participant.vars.get(nameC)
+
 
 		if beliefOfSelectedRound == medianInSelectedRound:
-			self.payoff = Constants.showup + Constants.bonus
+			bonus1 = Constants.bonus
 		else:
-			self.payoff = Constants.showup
-			
+			bonus1 = c(0)
+
+		randomVar = random.random()*100
+		if randomVar > confidenceOfSelectedRound:
+			randomVar2 = random.random()
+			if randomVar2 <= confidenceOfSelectedRound:
+				bonus2 = Constants.confidenceBonus
+			else:
+				bonus2 = c(0)
+		else:
+			if  beliefOfSelectedRound == medianInSelectedRound:
+				bonus2 = Constants.confidenceBonus
+			else:
+				bonus2 = c(0)
+		
+		self.payoff = Constants.showup + bonus1 + bonus2
 		return self.payoff
 
 
