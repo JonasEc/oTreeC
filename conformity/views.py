@@ -151,11 +151,11 @@ class payment(Page):
 	def is_displayed(self):
 		return self.round_number == Constants.num_rounds
 	def vars_for_template(self):
-		if self.player.payoff == Constants.showup + Constants.bonus or Constants.showup + Constants.bonus + Constants.confidenceBonus:
+		if self.player.payoff == Constants.showup + Constants.bonus or self.player.payoff == Constants.showup + Constants.bonus + Constants.confidenceBonus:
 			extra1 = True
 		else:
 			extra1 = False
-		if self.player.payoff == Constants.showup + Constants.confidenceBonus or Constants.showup + Constants.bonus + Constants.confidenceBonus:
+		if self.player.payoff == Constants.showup + Constants.confidenceBonus or self.player.payoff == Constants.showup + Constants.bonus + Constants.confidenceBonus:
 			extra2 = True
 		else:
 			extra2 = False

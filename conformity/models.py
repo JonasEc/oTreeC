@@ -148,8 +148,8 @@ class Player(BasePlayer):
 			bonus1 = c(0)
 
 		randomVar = random.random()*100
-		if randomVar > confidenceOfSelectedRound:
-			randomVar2 = random.random()
+		if randomVar <= confidenceOfSelectedRound:
+			randomVar2 = random.random()*100
 			if randomVar2 <= confidenceOfSelectedRound:
 				bonus2 = Constants.confidenceBonus
 			else:
