@@ -17,6 +17,8 @@ class IRB(Page):
 class instructions(Page):
 	def is_displayed(self):
 		return self.round_number == 1
+	def vars_for_template(self):
+		return {"min": Constants.right_side_amounts[0], "max": Constants.right_side_amounts[len(Constants.right_side_amounts)-1], "number": len(Constants.right_side_amounts)}
 
 class quizz(Page):
 	def is_displayed(self):
@@ -28,6 +30,10 @@ class quizz(Page):
 		for key in range(1,Constants.numberunderstandingquestions+1):
 			fields_to_show.append('truefalse{}'.format(key))
 		return fields_to_show
+
+	def vars_for_template(self):
+		return {"one": 1, "two": 2}
+
 	def error_message(self, values):
 		summand = 0
 		if values["truefalse1"] != 1:
@@ -47,6 +53,10 @@ class quizz(Page):
 		if values["truefalse8"] != 2:
 			summand += 1	
 		if values["truefalse9"] != 2:
+			summand += 1	
+		if values["truefalse10"] != 5:
+			summand += 1	
+		if values["truefalse11"] != 4:
 			summand += 1	
 		if summand > 1:	
 			return 'Sorry, you got ' + str(summand) + " questions wrong."
@@ -71,7 +81,7 @@ class commit(Page):
 	form_model = models.Player 
 	form_fields = ['commitment', 'belief']
 	def vars_for_template(self):
-		return {"charity": Constants.charities[self.round_number-1], "listCommits1": Constants.money[0:12], "listCommits2": Constants.money[12:24], "listCommits3": Constants.money[24:36]}
+		return {"charity": Constants.charities[self.round_number-1], "listCommits1": Constants.money[0:12], "listCommits2": Constants.money[12:24], "listCommits3": Constants.money[24:36], "one": 1}
 	def before_next_page(self):
 		nameC = "commitment" + str(self.round_number)
 		nameB = "belief" + str(self.round_number)
@@ -82,7 +92,7 @@ class confidence(Page):
 	form_model = models.Player 
 	form_fields = ['confidence']
 	def vars_for_template(self):
-		return {"one": 1, "left_side": Constants.confidenceBonus, "right_side": Constants.confidenceBonus, "right_side_amounts": Constants.right_side_amounts, 'belief': self.player.belief}
+		return {"one": 1, "left_side": Constants.confidenceBonus, "right_side": Constants.confidenceBonus, "right_side_amounts": Constants.right_side_amounts, 'belief': self.player.belief, "committed": self.player.belief}
 	def before_next_page(self):
 		nameC = "confidence" + str(self.round_number)
 		self.player.participant.vars[nameC] = self.player.confidence
@@ -151,19 +161,19 @@ class payment(Page):
 	def is_displayed(self):
 		return self.round_number == Constants.num_rounds
 	def vars_for_template(self):
-		if self.player.payoff == Constants.showup + Constants.bonus or self.player.payoff == Constants.showup + Constants.bonus + Constants.confidenceBonus:
-			extra1 = True
+		if self.player.payoff > Constants.showup: # + Constants.bonus or self.player.payoff == Constants.showup + Constants.bonus + Constants.confidenceBonus:
+			extra = True
 		else:
-			extra1 = False
-		if self.player.payoff == Constants.showup + Constants.confidenceBonus or self.player.payoff == Constants.showup + Constants.bonus + Constants.confidenceBonus:
-			extra2 = True
-		else:
-			extra2 = False
+			extra = False
+		# if self.player.payoff == Constants.showup + Constants.confidenceBonus or self.player.payoff == Constants.showup + Constants.bonus + Constants.confidenceBonus:
+		# 	extra2 = True
+		# else:
+		# 	extra2 = False
 		if self.session.vars.get("selectedPlayer") == self.player.id_in_group:
 			waiting = True
 		else:
 			waiting = False
-		return {"payment": self.player.payoff, "extra1": extra1, "extra2": extra2, "waiting": waiting, "round": self.session.vars.get("selectedRound"), "charity": Constants.charities[self.session.vars.get("selectedRound")-1], "money": Constants.money[self.player.timeMinutes -1]} 	
+		return {"payment": self.player.payoff, "extra": extra, "waiting": waiting, "round": self.session.vars.get("selectedRound"), "charity": Constants.charities[self.session.vars.get("selectedRound")-1], "money": Constants.money[self.player.timeMinutes -1]} 	
 
 
 

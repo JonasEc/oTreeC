@@ -64,16 +64,23 @@ If you correctly state the median number of minutes that others (excluding you) 
 </p>
 
 <b>State Confidence in the Belief on Others' Decisions</b><br>
-In each round, on the screen after you make your guess about <b>others'</b> median decision, you will also be asked about your confidence in this decision.   In particular, you will face a series of ten choices: 
-"Would you rather receive {{Constants.confidenceBonus}} if your guess of the median is correct or would you rather receive {{Constants.confidenceBonus}} with [X%] probability?", where X will range from 10% to 100%.   
+In each round, on the screen after you make your guess about <b>others'</b> median decision, you will also be asked about your confidence in this decision.   In particular, you will face a series of {{number}} choices of the following type: 
+"Would you rather receive {{Constants.confidenceBonus}} <b>if</b> your guess of the median is within {{Constants.accuracy}} minute of the true median, or would you rather receive [$X] for sure?", where X will range from {{min}} to {{max}}. </p>
+
+<p> The decisions you will face will be presented like in the following table: in this example table, the participant selected that for any amount of money smaller than $1.00, she would rather take the gamble that pays her {{Constants.confidenceBonus}} if she is close to the true median, but for more money she prefers having the money for sure.
+</p>
+
+<img class="bottom" src="{% static "conformity/example.png" %}"  />
+
+
+<p>
+For the randomly selected round, the computer will also randomly select one of the decisions you made and will implement it. That means, the computer will randomly choose one of the rows and check what you have chosen for this row: if you have chosen the left hand side, we will pay you {{Constantsn.confidenceBonus}} if your guess is within {{Constants.accuracy}} minute of the true median of everyone else's commitment in the randomly selected round. If you have chosen the right hand side, we will pay you what it states on the right hand side of the row in question. </p>
+
+</p>Because any one row of any one round could be selected to count, you should treat all rows and all rounds as if they counted. This also means that it is in your best interest to think carefully about what amount of money is worth as much to you as the chance to win {{Constants.confidenceBonus}} <b>if</b> your guess was close enough to the truth. Note: because we will ask you about <b>others'</b> median choice, you cannot influence your likelihood of winning extra money by your decision of how many minutes to commit.
 </p>
 
 <p>
-For the randomly selected round, the computer will randomly select one of the decisions you made and will implement it. That means that any one of the decisions could be implemented and you should truthfully report whether you prefer the lottery for each percentage probability or your guess. Note: because we will ask you about <b>others'</b> median choice, you cannot influence your likelihood of winning extra money by your decision of how many minutes to commit.
-</p>
-
-<p>
-<b>Note:</b> The median represents the 50th percentile. That is, if you have a series of numbers and order them from the lowest to the highest, then the median is the number in the middle. For example, the median of {1,3,4,9,10} is 4.   
+<b>Reminder:</b> The median represents the 50th percentile. That is, if you have a series of numbers and order them from the lowest to the highest, then the median is the number in the middle. For example, the median of {1,3,4,9,10} is 4.   
 </p>
 
 <p>
@@ -112,3 +119,16 @@ Throughout the study, please push Next on the computer screen to continue or to 
     {% next_button %}
 
 {% endblock %}
+
+
+
+{% block styles %}
+
+ <style type="text/css">
+ img.bottom {
+     margin-bottom: 1cm}
+
+
+ </style>
+
+ {% endblock %}

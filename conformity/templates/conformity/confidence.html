@@ -9,11 +9,11 @@ How confident are you in your guess?
 
 {% block content %}
 
-<p> Please tell us how confident you are in your guess that the median commitment by all players OTHER THAN YOU in this round is <b>{{belief}} </b> {% ifequal comittedMin one %} minute {% else %} minutes {% endifequal %} of waiting. </p>
+<p> On this page, we would like to find out how confident you are in your guess that the median commitment by all players OTHER THAN YOU in this round is <b>{{belief}} </b> {% ifequal committed one %} minute {% else %} minutes {% endifequal %} of waiting. </p>
 
-<p> Think of each of the rows of the table below as asking: "Would you rather receive {{Constants.confidenceBonus}} if your guess of the median is correct or would you rather receive {{Constants.confidenceBonus}} with [X%] probability?" </p>
+<p> Think of each of the rows of the table below as asking: "Would you rather receive {{Constants.confidenceBonus}} if your guess of the median is correct or would you rather receive [$X] for sure?" </p>
 
-<p> If you select an entry on the left hand side, we will pay you {{left_side}} if your guess is exactly correct, if this round is selected for payment. If you select an entry on the right hand side, the computer will pay you an extra {{right_side}} with the probability indicated in each field, if this round is selected for payment. </p>
+<p>The computer will randomly choose one of the rows for the round selected for payment and implement your decision. Hence, if you have chosen the left hand side entry for the row selected by the computer, we will pay you {{left_side}} if your guess is within {{Constants.accuracy}} minute of the true median of everyone else's commitment in the randomly selected round. If you have chosen the right hand side entry of the randomly selceted row, we will pay you what it states on the right hand side of the row in question. </p>
 
 <p> Note: you can switch from the left to the right hand side option for all decisions at once by simply clicking any one row. </p>
 
@@ -32,7 +32,7 @@ How confident are you in your guess?
         {% for amount in right_side_amounts %}
             <tr>
                 <td align="right">
-                    Extra <b>{{left_side}}</b> if guess of <b>{{belief}}{% ifequal comittedMin one %} minute {% else %} minutes {% endifequal %} </b> is exactly <b>correct</b> </td>
+                     <b>{{left_side}}</b> if guess (<b>{{belief}}{% ifequal committed one %} minute{% else %} minutes{% endifequal %}</b>) is <b>within {{Constants.accuracy}} minute</b> of true median </td>
                 <td align="middle">
                     <input type="radio" name="amount_{{ amount|json }}" value="left"
                            required>&nbsp;&nbsp;
@@ -40,7 +40,7 @@ How confident are you in your guess?
                            value="right" data-amount="{{ amount|json }}" required>
                 </td>
                 <td align="left">
-                    Extra <b> {{right_side}}</b> with <b>{{amount}}% probability</b>  </td>
+                    <b>{{amount}}</b> </td>
             </tr>
         {% endfor %}
     </table>

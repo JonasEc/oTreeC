@@ -8,11 +8,12 @@
 {% block content %}
 
     <p>
-        Please answer the following questions carefully. You cannot proceed unless you answer all true/false questions correctly.
+        Please answer the following questions carefully. You cannot proceed unless you answer all questions correctly.
     </p>
 
     {% for field in form %}
         {% formfield field %}
+        {% ifequal forloop.revcounter two %} <img class= "bottom" src="{% static 'conformity/example2.png' %}"  /> {% endifequal %} {% ifequal forloop.revcounter one %} <img class= "bottom" src="{% static 'conformity/example3.png' %}"  /> {% endifequal %}
     {% endfor %}
 
     {% next_button %}
@@ -41,3 +42,15 @@
     {% next_button %}
 
 {% endblock %}
+
+
+{% block styles %}
+
+ <style type="text/css">
+ img.bottom {
+     margin-bottom: 1cm}
+
+
+ </style>
+
+ {% endblock %}
