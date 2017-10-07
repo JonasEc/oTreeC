@@ -43,10 +43,11 @@ class Constants(BaseConstants):
 ### Money
 	money = [c(3.72),c(5.72),c(6.72),c(7.67),c(8.57),c(9.42),c(10.22),c(10.97),c(11.67),c(12.32),c(12.92),c(13.47),c(13.97),c(14.42),c(14.82),c(15.17),c(15.47),c(15.72),c(15.92),c(16.07),c(16.17),c(16.26),c(16.34),c(16.41),c(16.47),c(16.52),c(16.56),c(16.59),c(16.61),c(16.62),c(16.62),c(16.63),c(16.63),c(16.63),c(16.64),c(16.64) ]
 	showup = c(20)
-	bonus = c(3)
-	confidenceBonus =c(5)
+	bonus = c(5)
+	bonusForConfidence = 3
+	confidenceBonus =c(bonusForConfidence)
 
-	r = np.linspace(1,5,9)
+	r = np.linspace(1,bonusForConfidence,9)
 	right_side_amounts = [c(0.05), c(0.10), c(0.25), c(0.50), c(0.75)] + [c(float(k)) for k in r]
 
 ### TIMER:
@@ -63,6 +64,9 @@ class Subsession(BaseSubsession):
 		self.session.vars["selectedPlayer"] = selectedPlayer
 
 		self.session.vars["selectedRound"] = random.randint(1, Constants.num_rounds)
+
+		selectedIncentive = random.randint(1,2)
+		self.session.vars["selectedIncentive"] = selectedIncentive
 
 
 class Group(BaseGroup):
@@ -84,8 +88,8 @@ class Player(BasePlayer):
 	truefalse7 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'No additional time']],widget=widgets.RadioSelect(),verbose_name="If you ARE the selected participant, you will have to wait:")
 	truefalse8 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'None of the above']],widget=widgets.RadioSelect(),verbose_name="If you ARE NOT the selected participant, your earnings for Make-A-Wish Foundation will depend on:")
 	truefalse9 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'No additional time']],widget=widgets.RadioSelect(),verbose_name="If you ARE NOT the selected participant, you will have to wait:")
-	truefalse10 = models.PositiveIntegerField(verbose_name= "Look at the decision table below. Please enter how much money (in whole dollars) the participant will be paid if the true median is 12 minutes and row number 5 is implemented by the computer.")
-	truefalse11 = models.PositiveIntegerField(verbose_name= "Look at the decision table below. Please enter how much money (in whole dollars) the participant will be paid if the true median is 16 minutes and row number 12 is implemented by the computer.")
+	truefalse10 = models.PositiveIntegerField(verbose_name= "Look at the decision table below. Please enter how much money (in whole dollars) the participant will be paid if the true median is 12 minutes and row number 5 is implemented by the computer and this question is chosen for payment.")
+	truefalse11 = models.PositiveIntegerField(verbose_name= "Look at the decision table below. Please enter how much money (in whole dollars) the participant will be paid if the true median is 16 minutes and row number 10 is implemented by the computer and this question is chosen for payment.")
 
 ######## ACTUAL DATA COLLECTED
 	commitment = models.PositiveIntegerField(min=0,max=35)
@@ -142,21 +146,24 @@ class Player(BasePlayer):
 		medianInSelectedRound = self.participant.vars.get(nameM)
 		confidenceOfSelectedRound = self.participant.vars.get(nameC)
 
-
-		if beliefOfSelectedRound == medianInSelectedRound:
-			bonus1 = Constants.bonus
-		else:
-			bonus1 = c(0)
-
-		randomVar = random.randint(0,len(Constants.right_side_amounts))
-		if Constants.right_side_amounts[randomVar] <= confidenceOfSelectedRound:
-			if  beliefOfSelectedRound in ([medianInSelectedRound] + [medianInSelectedRound - k for k in range(1,Constants.accuracy+1)] + [medianInSelectedRound + k for k in range(1,Constants.accuracy+1)]):
-				bonus2 = Constants.confidenceBonus
-			else:
-				bonus2 = c(0)
-		else:
-			bonus2 = Constants.right_side_amounts[randomVar]
+		selectedIncentive = self.session.vars.get("selectedIncentive")
 		
+		if selectedIncentive == 1:
+			if beliefOfSelectedRound == medianInSelectedRound:
+				bonus1 = Constants.bonus
+			else:
+				bonus1 = c(0)
+			bonus2 = c(0)
+		elif selectedIncentive == 2:
+			randomVar = random.randint(0,len(Constants.right_side_amounts))
+			if Constants.right_side_amounts[randomVar] <= confidenceOfSelectedRound:
+				if  beliefOfSelectedRound in ([medianInSelectedRound] + [medianInSelectedRound - k for k in range(1,Constants.accuracy+1)] + [medianInSelectedRound + k for k in range(1,Constants.accuracy+1)]):
+					bonus2 = Constants.confidenceBonus
+				else:
+					bonus2 = c(0)
+			else:
+				bonus2 = Constants.right_side_amounts[randomVar]
+			bonus1 = c(0)
 		self.payoff = Constants.showup + bonus1 + bonus2
 		return self.payoff
 

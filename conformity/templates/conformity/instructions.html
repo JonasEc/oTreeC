@@ -21,7 +21,7 @@ Children search the depths of their imagination when they wish to be someone for
 <b>I wish to meet:</b><br>
 Many want to meet their favorite athlete, recording artist, television personality, movie star, politician or public figure.<br>
 <b>I wish to have:</b><br>
-Children often wish for a special gift, such as a computer, a tree house, a shopping spree or something that they have coveted for a long time.”<br>
+Children often wish for a special gift, such as a computer, a tree house, a shopping spree or something that they have coveted for a long time.<br>
 </p>
 
 <p>
@@ -53,14 +53,17 @@ Note that the longer you choose to stay in the selected round (i.e., the higher 
 For instance, if you choose Y = 3, then you will have to stay 3 minutes and Make-A-Wish Foundation will receive the corresponding donation.   Or, if you choose Y = 6 minutes, then you will have to stay 6 minutes and Make-A-Wish Foundation will receive the corresponding donation. 
 </p>
 
-<p>
+<p><b> Additional Bonus Payments: </b> <br> 
+In each round, after you make your effort decision, you will answer two further questions. You should answer each question carefully, as one of the two questions in one of the rounds will be selected at random, and you may earn a bonus payment for this question, depending on your answer.  Read on for more information about these two questions:
+</p>
+
 <b>State Belief on Others' Decisions</b><br>
 In each round, on the same screen that you make your above decisions, you will also be asked your belief about others' decisions.   In particular, you will be asked: 
 “What is the MEDIAN number of minutes YOU BELIEVE others (excluding you) will stay and earn money for Make-A-Wish Foundation, when any money one earns will be directed towards helping children in [NAME OF CITY]?”   
 </p>
 
 <p>
-If you correctly state the median number of minutes that others (excluding you) chose in the randomly selected round, then you will receive an ADDITIONAL bonus payment of $3.   Thus, it is in your interest to carefully guess the median number of minutes that other people chose to the best of your ability.   Note that your own decision will NOT impact this median that you are trying to guess. 
+If you correctly state the median number of minutes that others (excluding you) chose in the randomly selected round and the computer chooses this question, then you will receive an ADDITIONAL bonus payment of {{Constants.bonus}}.   Thus, it is in your interest to carefully guess the median number of minutes that other people chose to the best of your ability.   Note that your own decision will NOT impact this median that you are trying to guess. 
 </p>
 
 <b>State Confidence in the Belief on Others' Decisions</b><br>
@@ -74,10 +77,12 @@ In each round, on the screen after you make your guess about <b>others'</b> medi
 
 
 <p>
-For the randomly selected round, the computer will also randomly select one of the decisions you made and will implement it. That means, the computer will randomly choose one of the rows and check what you have chosen for this row: if you have chosen the left hand side, we will pay you {{Constantsn.confidenceBonus}} if your guess is within {{Constants.accuracy}} minute of the true median of everyone else's commitment in the randomly selected round. If you have chosen the right hand side, we will pay you what it states on the right hand side of the row in question. </p>
+For the randomly selected round, the computer will also randomly select one of the decisions you made and will implement it, if the computer chooses this question. That means, the computer will then randomly choose one of the rows and check what you have chosen for this row: if you have chosen the left hand side, we will pay you {{Constantsn.confidenceBonus}} if your guess is within {{Constants.accuracy}} minute of the true median of everyone else's commitment in the randomly selected round. If you have chosen the right hand side, we will pay you what it states on the right hand side of the row in question. </p>
 
 </p>Because any one row of any one round could be selected to count, you should treat all rows and all rounds as if they counted. This also means that it is in your best interest to think carefully about what amount of money is worth as much to you as the chance to win {{Constants.confidenceBonus}} <b>if</b> your guess was close enough to the truth. Note: because we will ask you about <b>others'</b> median choice, you cannot influence your likelihood of winning extra money by your decision of how many minutes to commit.
 </p>
+
+<p> <b> Note: </b> only ONE of the two questions for ONE of the {{Constants.num_rounds}} rounds will be selected and counted for payment! </p>
 
 <p>
 <b>Reminder:</b> The median represents the 50th percentile. That is, if you have a series of numbers and order them from the lowest to the highest, then the median is the number in the middle. For example, the median of {1,3,4,9,10} is 4.   

@@ -18,7 +18,7 @@ class instructions(Page):
 	def is_displayed(self):
 		return self.round_number == 1
 	def vars_for_template(self):
-		return {"min": Constants.right_side_amounts[0], "max": Constants.right_side_amounts[len(Constants.right_side_amounts)-1], "number": len(Constants.right_side_amounts)}
+		return { "min": Constants.right_side_amounts[0], "max": Constants.right_side_amounts[len(Constants.right_side_amounts)-1], "number": len(Constants.right_side_amounts)}
 
 class quizz(Page):
 	def is_displayed(self):
@@ -54,9 +54,9 @@ class quizz(Page):
 			summand += 1	
 		if values["truefalse9"] != 2:
 			summand += 1	
-		if values["truefalse10"] != 5:
+		if values["truefalse10"] != 3:
 			summand += 1	
-		if values["truefalse11"] != 4:
+		if values["truefalse11"] != 2:
 			summand += 1	
 		if summand > 1:	
 			return 'Sorry, you got ' + str(summand) + " questions wrong."
