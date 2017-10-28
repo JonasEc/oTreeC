@@ -11,11 +11,11 @@ How confident are you in your guess?
 
 <p> On this page, we would like to find out how confident you are in your guess that the median commitment by all players OTHER THAN YOU in this round is <b>{{belief}} </b> {% ifequal committed one %} minute {% else %} minutes {% endifequal %} of waiting. </p>
 
-<p> Think of each of the rows of the table below as asking: "Would you rather receive {{Constants.confidenceBonus}} if your guess of the median is correct or would you rather receive [$X] for sure?" </p>
+<p> Think of each of the rows of the table below as asking: "Would you rather receive {{Constants.confidenceBonus}} if your guess of the median is within one minute of the median answer or would you rather receive [$X] for sure?" </p>
 
-<p>The computer will randomly choose one of the rows for the round selected for payment and implement your decision. Hence, if you have chosen the left hand side entry for the row selected by the computer, we will pay you {{left_side}} if your guess is within {{Constants.accuracy}} minute of the true median of everyone else's commitment in the randomly selected round. If you have chosen the right hand side entry of the randomly selceted row, we will pay you what it states on the right hand side of the row in question. </p>
+<p>If this turns out to be the selected round and the computer chooses this question, the computer will then randomly choose one of the rows and implement your decision. If you have chosen the left-hand-side entry for that row, we will pay you {{left_side}} if your guess is within {{Constants.accuracy}} minute of the true median of everyone else's commitment. If you have chosen the right-hand-side entry of the randomly selceted row, we will pay you the stated amount. </p>
 
-<p> Note: you can switch from the left to the right hand side option for all decisions at once by simply clicking any one row. </p>
+<p> Note: When you click an option, we will automatically fill in the rest of the choices for you on the assumption that you think more money is better. You can adjust your choice as many times as you like before moving on. </p>
 
 
     <table class="table table-striped">

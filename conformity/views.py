@@ -27,7 +27,7 @@ class quizz(Page):
 	form_model = models.Player
 	def get_form_fields(self):
 		fields_to_show=[]
-		for key in range(1,Constants.numberunderstandingquestions+1):
+		for key in range(Constants.numberunderstandingquestions+1):
 			fields_to_show.append('truefalse{}'.format(key))
 		return fields_to_show
 
@@ -35,35 +35,66 @@ class quizz(Page):
 		return {"one": 1, "two": 2}
 
 	def error_message(self, values):
-		summand = 0
+		summand = []
+		if values["truefalse0"] != 1:
+			summand = summand + ["Question 1"]
 		if values["truefalse1"] != 1:
-			summand += 1
+			summand = summand + ["Question 2"]
 		if values["truefalse2"] != Constants.feedback:
-			summand += 1
+			summand = summand + ["Question 3"]
 		if values["truefalse3"] != False:
-			summand += 1
+			summand = summand + ["Question 4"]
 		if values["truefalse4"] != Constants.public:
-			summand += 1
+			summand = summand + ["Question 5"]
 		if values["truefalse5"] != False:
-			summand += 1	
+			summand = summand + ["Question 6"]	
 		if values["truefalse6"] != 0:
-			summand += 1	
+			summand = summand + ["Question 7"]	
 		if values["truefalse7"] != 0:
-			summand += 1	
+			summand = summand + ["Question 8"]
 		if values["truefalse8"] != 2:
-			summand += 1	
+			summand = summand + ["Question 9"]	
 		if values["truefalse9"] != 2:
-			summand += 1	
+			summand = summand + ["Question 10"]	
 		if values["truefalse10"] != 3:
-			summand += 1	
+			summand = summand + ["Question 11"]	
 		if values["truefalse11"] != 2:
-			summand += 1	
-		if summand > 1:	
-			return 'Sorry, you got ' + str(summand) + " questions wrong."
-			summand = 0
-		elif summand == 1:
-			summand = 0
-			return 'Almost there! You just got one question wrong!'
+			summand = summand + ["Question 12"]	
+		if len(summand) == 1:	
+			text = "Your answer to the following question is incorrect: " + ", ".join(summand) + "."
+			return text	
+		elif len(summand) > 1:	
+			text = "Your answers to the following questions are incorrect: " + ", ".join(summand) + "."
+			return text	
+		# summand = 0
+		# if values["truefalse1"] != 1:
+		# 	summand += 1
+		# if values["truefalse2"] != Constants.feedback:
+		# 	summand += 1
+		# if values["truefalse3"] != False:
+		# 	summand += 1
+		# if values["truefalse4"] != Constants.public:
+		# 	summand += 1
+		# if values["truefalse5"] != False:
+		# 	summand += 1	
+		# if values["truefalse6"] != 0:
+		# 	summand += 1	
+		# if values["truefalse7"] != 0:
+		# 	summand += 1	
+		# if values["truefalse8"] != 2:
+		# 	summand += 1	
+		# if values["truefalse9"] != 2:
+		# 	summand += 1	
+		# if values["truefalse10"] != 3:
+		# 	summand += 1	
+		# if values["truefalse11"] != 2:
+		# 	summand += 1	
+		# if summand > 1:	
+		# 	return 'Sorry, you got ' + str(summand) + " questions wrong."
+		# 	summand = 0
+		# elif summand == 1:
+		# 	summand = 0
+		# 	return 'Almost there! You just got one question wrong!'
 
 
 class practice(Page):

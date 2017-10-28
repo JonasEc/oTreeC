@@ -35,7 +35,7 @@ class Constants(BaseConstants):
 	num_rounds = len(charities)
 
 ### TREATMENT:
-	public = False
+	public = environ.get("PublicTreatment")
 	feedback = True
 	numberunderstandingquestions = 11
 	accuracy = 1
@@ -79,17 +79,18 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
 ####### QUIZZ 
-	truefalse1 = models.PositiveIntegerField(verbose_name="How many of your decisions, at most, will count for payment?")
-	truefalse2 = models.BooleanField(choices=[[1, 'Yes'],[0, 'No']],widget=widgets.RadioSelect(),verbose_name=("Before you make your decisions in Rounds 2 through" + " " +str(Constants.num_rounds) +", will you know some information about the decisions made in the previous round?"))
-	truefalse3 = models.BooleanField(choices=[[1, 'Yes'],[0, 'No']],widget=widgets.RadioSelect(),verbose_name=("Before making their decisions in Rounds 2 through" + " " +str(Constants.num_rounds) +", will others know your decision in particular in previous rounds?"))
-	truefalse4 = models.BooleanField(choices=[[1, 'Yes'],[0, 'No']],widget=widgets.RadioSelect(),verbose_name="After all decisions are made, will others in this room learn your decision from the selected round?")
-	truefalse5 = models.BooleanField(choices=[[1, 'Yes'],[0, 'No']],widget=widgets.RadioSelect(),verbose_name="After all decisions are made, will others in this room learn your decisions from the rounds that were not selected?")
-	truefalse6 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'None of the above']],widget=widgets.RadioSelect(),verbose_name="If you ARE the selected participant, your earnings for Make-A-Wish Foundation will depend on:")
-	truefalse7 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'No additional time']],widget=widgets.RadioSelect(),verbose_name="If you ARE the selected participant, you will have to wait:")
-	truefalse8 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'None of the above']],widget=widgets.RadioSelect(),verbose_name="If you ARE NOT the selected participant, your earnings for Make-A-Wish Foundation will depend on:")
-	truefalse9 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'No additional time']],widget=widgets.RadioSelect(),verbose_name="If you ARE NOT the selected participant, you will have to wait:")
-	truefalse10 = models.PositiveIntegerField(verbose_name= "Look at the decision table below. Please enter how much money (in whole dollars) the participant will be paid if the true median is 12 minutes and row number 5 is implemented by the computer and this question is chosen for payment.")
-	truefalse11 = models.PositiveIntegerField(verbose_name= "Look at the decision table below. Please enter how much money (in whole dollars) the participant will be paid if the true median is 16 minutes and row number 10 is implemented by the computer and this question is chosen for payment.")
+	truefalse0 = models.PositiveIntegerField(verbose_name="Question 1: How many of your waiting-time decisions, at most, will count for payment?")
+	truefalse1 = models.PositiveIntegerField(verbose_name="Question 1: How many of your bonus-payment decisions, at most, will count for payment?")
+	truefalse2 = models.BooleanField(choices=[[1, 'Yes'],[0, 'No']],widget=widgets.RadioSelect(),verbose_name=("Question 2: Before you make your decisions in Rounds 2 through" + " " +str(Constants.num_rounds) +", will you know some information about the decisions made in the previous round?"))
+	truefalse3 = models.BooleanField(choices=[[1, 'Yes'],[0, 'No']],widget=widgets.RadioSelect(),verbose_name=("Question 3: Before making their decisions in Rounds 2 through" + " " +str(Constants.num_rounds) +", will others know your decision in particular in previous rounds?"))
+	truefalse4 = models.BooleanField(choices=[[1, 'Yes'],[0, 'No']],widget=widgets.RadioSelect(),verbose_name="Question 4: After all decisions are made, will others in this room learn your decision from the selected round?")
+	truefalse5 = models.BooleanField(choices=[[1, 'Yes'],[0, 'No']],widget=widgets.RadioSelect(),verbose_name="Question 5: After all decisions are made, will others in this room learn your decisions from the rounds that were not selected?")
+	truefalse6 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'None of the above']],widget=widgets.RadioSelect(),verbose_name="Question 6: If you ARE the selected participant, your earnings for Make-A-Wish Foundation will depend on:")
+	truefalse7 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'No additional time']],widget=widgets.RadioSelect(),verbose_name="Question 7: If you ARE the selected participant, you will have to wait:")
+	truefalse8 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'None of the above']],widget=widgets.RadioSelect(),verbose_name="Question 8: If you ARE NOT the selected participant, your earnings for Make-A-Wish Foundation will depend on:")
+	truefalse9 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'No additional time']],widget=widgets.RadioSelect(),verbose_name="Question 9: If you ARE NOT the selected participant, you will have to wait:")
+	truefalse10 = models.PositiveIntegerField(verbose_name= "Question 10: Look at the decision table below. Please enter how much money (in whole dollars) the participant will be paid if the true median is 12 minutes and row number 5 is implemented by the computer and this question is chosen for payment.")
+	truefalse11 = models.PositiveIntegerField(verbose_name= "Question 11: Look at the decision table below. Please enter how much money (in whole dollars) the participant will be paid if the true median is 16 minutes and row number 10 is implemented by the computer and this question is chosen for payment.")
 
 ######## ACTUAL DATA COLLECTED
 	commitment = models.PositiveIntegerField(min=0,max=35)
@@ -116,13 +117,13 @@ class Player(BasePlayer):
 		return self.timeMinutes
 
 ######## Survey
-	impactBelief   = models.PositiveIntegerField(verbose_name="My choices were impacted by what I THOUGHT other participants chose.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
-	impactKnow     = models.PositiveIntegerField(verbose_name="My choices were impacted by how much I KNEW other participants chose.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
-	impactLocation = models.PositiveIntegerField(verbose_name="My choices were impacted by the different locations of the Make-A-Wish Foundation across rounds.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
-	impactTexas    = models.PositiveIntegerField(verbose_name="My choices were impacted by the fact that the Make-A-Wish Foundation locations involved in this study were in Texas, as opposed to some other state in the U.S.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
-	impactFair     = models.PositiveIntegerField(verbose_name="My choices were impacted by what I thought was fair.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
-	impactNice     = models.PositiveIntegerField(verbose_name="My choices were impacted by what I thought was nice.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
-	impactGoodLook = models.PositiveIntegerField(verbose_name="My choices were impacted by what I thought looked good to others.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
+	impactBelief   = models.PositiveIntegerField(verbose_name="My choices about my own waiting times were impacted by what I THOUGHT other participants chose.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
+	impactKnow     = models.PositiveIntegerField(verbose_name="My choices about my own waiting times were impacted by how much I KNEW other participants chose.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
+	impactLocation = models.PositiveIntegerField(verbose_name="My choices about my own waiting times were impacted by the different locations of the Make-A-Wish Foundation across rounds.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
+	impactTexas    = models.PositiveIntegerField(verbose_name="My choices about my own waiting times were impacted by the fact that the Make-A-Wish Foundation locations involved in this study were in Texas, as opposed to some other state in the U.S.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
+	impactFair     = models.PositiveIntegerField(verbose_name="My choices about my own waiting times were impacted by what I thought was fair.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
+	impactNice     = models.PositiveIntegerField(verbose_name="My choices about my own waiting times were impacted by what I thought was nice.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
+	impactGoodLook = models.PositiveIntegerField(verbose_name="My choices about my own waiting times were impacted by what I thought looked good to others.", choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
 	favMakeAWish   = models.PositiveIntegerField(verbose_name="I feel favorably about the Make-A-Wish Foundation." , choices=[[1,"Strongly Disagree"],[2, "Disagree"],[3, "Neutral"],[4, "Agree"],[5,"Strongly Agree"]], widget=widgets.RadioSelectHorizontal())
 
 	studentID = models.CharField(verbose_name="What is your Stanford Student ID Number?")
