@@ -220,7 +220,7 @@ class ResultsWaitPage(WaitPage):
 			player.medianCommitment = player.calcmedian()
 			nameM = "median" +str(self.round_number)
 			player.participant.vars[nameM] = player.medianCommitment
-			if self.round_number == Constants.num_rounds:
+			if self.round_number == self.session.vars.get("selectedRound"):
 				player.timeMinutes = player.commitWait()
 				player.participant.vars["committedMinutes"] = player.commitWait()
 
