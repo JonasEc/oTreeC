@@ -35,7 +35,7 @@ class Constants(BaseConstants):
 	num_rounds = len(charities)
 
 ### TREATMENT:
-	public = environ.get("PublicTreatment")
+	public = True
 	feedback = True
 	numberunderstandingquestions = 11
 	accuracy = 1
@@ -59,7 +59,7 @@ class Constants(BaseConstants):
 class Subsession(BaseSubsession):
 
 #### PAYOFF RANDOMISATION:
-	def before_session_starts(self):
+	def creating_sess(self):
 		selectedPlayer = random.randint(1,Constants.players_per_group)	
 		self.session.vars["selectedPlayer"] = selectedPlayer
 
