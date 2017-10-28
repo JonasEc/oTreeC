@@ -59,7 +59,7 @@ class Constants(BaseConstants):
 class Subsession(BaseSubsession):
 
 #### PAYOFF RANDOMISATION:
-	def creating_sess(self):
+	def creating_session(self):
 		selectedPlayer = random.randint(1,Constants.players_per_group)	
 		self.session.vars["selectedPlayer"] = selectedPlayer
 

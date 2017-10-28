@@ -18,7 +18,7 @@ class instructions(Page):
 	def is_displayed(self):
 		return self.round_number == 1
 	def vars_for_template(self):
-		return { "min": Constants.right_side_amounts[0], "max": Constants.right_side_amounts[len(Constants.right_side_amounts)-1], "number": len(Constants.right_side_amounts)}
+		return {  "min": Constants.right_side_amounts[0], "max": Constants.right_side_amounts[len(Constants.right_side_amounts)-1], "number": len(Constants.right_side_amounts)}
 
 class quizz(Page):
 	def is_displayed(self):
@@ -147,7 +147,8 @@ class publicWaitingInstructions(Page):
 	def is_displayed(self):
 		return self.round_number == Constants.num_rounds  and Constants.public == True
 	def vars_for_template(self):
-		return {"one": 1, "committed": self.player.participant.vars.get("committedMinutes")*60,"committedMin": self.player.participant.vars.get("committedMinutes"), "money": Constants.money[self.player.timeMinutes -1],"round": self.session.vars.get("selectedRound"), "charity":Constants.charities[self.session.vars.get("selectedRound")-1] }
+#		return {"one": 1, "committed": self.player.participant.vars.get("committedMinutes")*60,"committedMin": self.player.participant.vars.get("committedMinutes"), "money": Constants.money[self.player.timeMinutes -1],"round": self.session.vars.get("selectedRound"), "charity":Constants.charities[self.session.vars.get("selectedRound")-1] }
+		return {"one": 1, "committed": self.player.timeMinutes*60,"committedMin": self.player.timeMinutes, "money": Constants.money[self.player.timeMinutes -1],"round": self.session.vars.get("selectedRound"), "charity":Constants.charities[self.session.vars.get("selectedRound")-1] }
 
 
 class waiting(Page):
@@ -220,7 +221,7 @@ class ResultsWaitPage(WaitPage):
 			player.medianCommitment = player.calcmedian()
 			nameM = "median" +str(self.round_number)
 			player.participant.vars[nameM] = player.medianCommitment
-			if self.round_number == self.session.vars.get("selectedRound"):
+			if self.round_number == Constants.num_rounds:
 				player.timeMinutes = player.commitWait()
 				player.participant.vars["committedMinutes"] = player.commitWait()
 
