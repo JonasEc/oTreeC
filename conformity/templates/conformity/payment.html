@@ -11,7 +11,7 @@
 
 <p> The randomly selected round was Round {{round}}. {% if waiting %} You were randomly selected to wait and earn money for the Make-A-Wish foundation and you have completed the waiting period. You have hence raised a donation of {{money}} for the Make-A-Wish Foundation and children in {{charity}}.{% else %}You were <b> not </b> randomly selected to wait and earn money for the Make-A-Wish Foundation.{% endif %}</p>
 
-{% if Constants.extraDonationTreat %} You were awarded a bonus payment of {{Constants.extraDonation}} and decided to share {{share}} of it with the ASPCA. %}
+{% if Constants.extraDonationTreat %} You were awarded a bonus payment of {{Constants.extraDonation}} and decided to share {{share}} of it with the ASPCA. {% endif %}
 
 <p> Your total compensation for this study is <b> {{payment}} </b>.{% if extra %} Note that you earned an extra bonus above your show-up reward! <!-- because you guessed the median minutes of the randomly selected round correctly.{% endif %} {% if extra2 %} Also, note that you earned an extra {{Constants.confidenceBonus}} because you either guessed the median correctly and indicated sufficiently high confidence in this guess or because you were simply a little lucky!{% endif %}  --></p> 
 
