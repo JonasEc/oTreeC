@@ -80,29 +80,32 @@ In each round, on the screen after you make your guess about <b>others'</b> medi
 <img class="bottom" src="{% static "conformity/example.png" %}"  />
 
 
-<p>Let’s say that, for the randomly selected round, the computer randomly determines that your bonus payment will depend on your answers to the confidence questions (that is, Part 2). The computer will then randomly choose one of the rows in the table and check your choice in that row. If you have chosen the option on the left-hand side, and if your guess is within 1 minute of the correct median, your bonus will the $3. If you have chosen the option on the right-hand side, your bonus will be the amount indicated in the right-hand side of that row, regardless of whether your guess was close to the median.</p>
+<p>Let’s say that, for the randomly selected round, the computer randomly determines that your bonus payment will depend on your answers to the confidence questions (that is, Question 2). The computer will then randomly choose one of the rows in the table and check your choice in that row. If you have chosen the option on the left-hand side, and if your guess is within 1 minute of the correct median, your bonus will the $3. If you have chosen the option on the right-hand side, your bonus will be the amount indicated in the right-hand side of that row, regardless of whether your guess was close to the median.</p>
 
 <p>You should treat the choice in every row as if it is the one that will count, because that could turn out to be the case. It is therefore in your best interests to think carefully about how much you value a chance to win $3 if your guess is within 1 minute of the actual median, and to answer these questions accordingly. Also remember that you are guessing the median waiting time chosen by other participants. You cannot influence your likelihood of receiving a larger bonus by changing your own waiting time. </p>
 
-<p>To repeat, your bonus will be determined either by your Part 1 answer, or by one of your Part 2 answers, in the randomly selected round. </p>
+<p>To repeat, your bonus will be determined either by your Question 1 answer, or by one of your Question 2 answers, in the randomly selected round. </p>
 
 
 <p>
 <b>Information on Others' Decisions</b><br>
-During Round 1, you will not receive any information on participants' decisions.
+{% if Constants.noFeedback %} You will not receive any information about others' decisions during this experiment. Neither will others learn anything about your deicisions during this experiment.
+{% else %} During Round 1, you will not receive any information on participants' decisions.
 </p>
 
-{% if Constants.public %} 
-<p>
-During Rounds 2 to {{Constants.num_rounds}}, you will learn the <b>median amount</b> of time other participants in this room (excluding you) chose to stay in the previous round.  For instance, in Round 2, you will learn the median amount of time other participants in this room chose to stay in Round 1. Similarly, in Round 7, you will learn the median amount of time other participants in this room chose to stay in Round 6. Note that your own decisions will NOT impact this median that you are shown. 
-</p>
+	{% if Constants.public %} 
+	<p>
+	During Rounds 2 to {{Constants.num_rounds}}, you will learn the <b>median amount</b> of time other participants in this room (excluding you) chose to stay in the previous round.  For instance, in Round 2, you will learn the median amount of time other participants in this room chose to stay in Round 1. Similarly, in Round 7, you will learn the median amount of time other participants in this room chose to stay in Round 6. Note that your own decisions will NOT impact this median that you are shown. 
+	</p>
 
-<p>Recall that after you have made your decisions for all {{Constants.num_rounds}} rounds, one round will be randomly selected.  Everyone will learn how long everyone else chose to stay in the selected round (in other words, not just the median or the choice of the selected participant, but the number of minutes chosen to stay by every person in this room for that round).  First, you will have to write how many minutes, from 0 – 35, you chose to stay on a nametag, and then place that nametag on a visible location on your shirt/jacket.  You will have to keep this nametag on for the duration of the study.   Second, the study leader will ask people to come up to the front of the room in groups according to how long they chose to stay (which corresponds to the number on their nametag), from 0 to 35 minutes.  That is, when directed, you will come up to the front of the room along with anyone else who chose to stay the same amount of time as you.   The study leader will order these groups into a line at the front of the room such that people who chose the least amount of time will be on the left and people who chose to stay the most amount of time will be on the right.  For instance, if you chose 0 minutes, then you would be in the first group called up to the front of the room and will stand to the left.   On the other hand, if you chose 35 minutes, then you would be in the last group called up to the front of the room and will stand on the right.  The study leader will check to make sure that you come up to the front of the room at the correct time. 
-</p>
-{% else %}
-<p>
-During Rounds 2 to {{Constants.num_rounds}}, you will learn the <b>median amount</b> of time other participants in this room (excluding you) chose to stay in the previous round.  For instance, in Round 2, you will learn the median amount of time other participants in this room chose to stay in Round 1. Similarly, in Round 7, you will learn the median amount of time other participants in this room chose to stay in Round 6. Note that your own decisions will NOT impact this median that you are shown.   Aside from this information on the median, you will NOT learn any information about how long others choose to stay. That is, all participants’ decisions, including your own, will remain anonymous.  
-</p>
+	<p>Recall that after you have made your decisions for all {{Constants.num_rounds}} rounds, one round will be randomly selected.  Everyone will learn how long everyone else chose to stay in the selected round (in other words, not just the median or the choice of the selected participant, but the number of minutes chosen to stay by every person in this room for that round).  First, you will have to write how many minutes, from 0 – 35, you chose to stay on a nametag, and then place that nametag on a visible location on your shirt/jacket.  You will have to keep this nametag on for the duration of the study.   Second, the study leader will ask people to come up to the front of the room in groups according to how long they chose to stay (which corresponds to the number on their nametag), from 0 to 35 minutes.  That is, when directed, you will come up to the front of the room along with anyone else who chose to stay the same amount of time as you.   The study leader will order these groups into a line at the front of the room such that people who chose the least amount of time will be on the left and people who chose to stay the most amount of time will be on the right.  For instance, if you chose 0 minutes, then you would be in the first group called up to the front of the room and will stand to the left.   On the other hand, if you chose 35 minutes, then you would be in the last group called up to the front of the room and will stand on the right.  The study leader will check to make sure that you come up to the front of the room at the correct time. 
+	</p>
+	{% else %}
+	<p>
+	During Rounds 2 to {{Constants.num_rounds}}, you will learn the <b>median amount</b> of time other participants in this room (excluding you) chose to stay in the previous round.  For instance, in Round 2, you will learn the median amount of time other participants in this room chose to stay in Round 1. Similarly, in Round 7, you will learn the median amount of time other participants in this room chose to stay in Round 6. Note that your own decisions will NOT impact this median that you are shown.   Aside from this information on the median, you will NOT learn any information about how long others choose to stay. That is, all participants’ decisions, including your own, will remain anonymous.  
+	</p>
+	{% endif %}
+
 {% endif %}
 
 <p>

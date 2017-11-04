@@ -35,8 +35,9 @@ class Constants(BaseConstants):
 	num_rounds = len(charities)
 
 ### TREATMENT:
-	public = True
-	feedback = True
+	public = False
+	extraDonationTreat = True
+	noFeedback = True
 	numberunderstandingquestions = 11
 	accuracy = 1
 
@@ -46,6 +47,7 @@ class Constants(BaseConstants):
 	bonus = c(5)
 	bonusForConfidence = 3
 	confidenceBonus =c(bonusForConfidence)
+	extraDonation = c(10)
 
 	r = np.linspace(1,bonusForConfidence,9)
 	right_side_amounts = [c(0.05), c(0.10), c(0.25), c(0.50), c(0.75)] + [c(float(k)) for k in r]
@@ -68,6 +70,16 @@ class Subsession(BaseSubsession):
 		selectedIncentive = random.randint(1,2)
 		self.session.vars["selectedIncentive"] = selectedIncentive
 
+		for player in self.get_players():
+			selectedExtra = random.random()
+			if selectedExtra > 0.5:
+				player.participant.vars["DonateFirst"] = True
+				player.participant.vars["DonateSecond"] = False
+			else:
+				player.participant.vars["DonateFirst"] = False
+				player.participant.vars["DonateSecond"] = True
+
+
 
 class Group(BaseGroup):
 	pass
@@ -81,7 +93,7 @@ class Player(BasePlayer):
 ####### QUIZZ 
 	truefalse0 = models.PositiveIntegerField(verbose_name="Question 1: How many of your waiting-time decisions, at most, will count for payment?")
 	truefalse1 = models.PositiveIntegerField(verbose_name="Question 2: How many of your bonus-payment decisions, at most, will count for payment?")
-	truefalse2 = models.BooleanField(choices=[[1, 'Yes'],[0, 'No']],widget=widgets.RadioSelect(),verbose_name=("Question 3: Before you make your decisions in Rounds 2 through" + " " +str(Constants.num_rounds) +", will you know some information about the decisions made in the previous round?"))
+	truefalse2 = models.BooleanField(choices=[[1, 'Yes'],[0, 'No']],widget=widgets.RadioSelect(),verbose_name=("Question 3: Before you make your decisions in Rounds 2 through" + " " +str(Constants.num_rounds) +", will you know some information about the decisions made by others in the previous round?"))
 	truefalse3 = models.BooleanField(choices=[[1, 'Yes'],[0, 'No']],widget=widgets.RadioSelect(),verbose_name=("Question 4: Before making their decisions in Rounds 2 through" + " " +str(Constants.num_rounds) +", will others know your decision in particular in previous rounds?"))
 	truefalse4 = models.BooleanField(choices=[[1, 'Yes'],[0, 'No']],widget=widgets.RadioSelect(),verbose_name="Question 5: After all decisions are made, will others in this room learn your decision from the selected round?")
 	truefalse5 = models.BooleanField(choices=[[1, 'Yes'],[0, 'No']],widget=widgets.RadioSelect(),verbose_name="Question 6: After all decisions are made, will others in this room learn your decisions from the rounds that were not selected?")
@@ -101,6 +113,8 @@ class Player(BasePlayer):
 
 	medianCommitment = models.PositiveIntegerField()
 	timeMinutes = models.PositiveIntegerField()
+
+	DonationDecision = models.CurrencyField(min=c(0),widget = widgets.SliderInput(), verbose_name="Please tell us how much of your extra payment, you would like to donate to the ASPCA:")
 
 	def calcmedian(self):
 		commits = []
@@ -165,7 +179,13 @@ class Player(BasePlayer):
 			else:
 				bonus2 = Constants.right_side_amounts[randomVar]
 			bonus1 = c(0)
-		self.payoff = Constants.showup + bonus1 + bonus2
+
+		if Constants.extraDonationTreat:
+			bonus3 = Constants.extraDonation - self.participant.vars.get("DonationAmount")
+		else:
+			bonus3 = c(0)
+
+		self.payoff = Constants.showup + bonus1 + bonus2 + bonus3
 		return self.payoff
 
 

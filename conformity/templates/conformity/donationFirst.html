@@ -1,0 +1,31 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+
+{% block title %}
+Congratulations!
+{% endblock %}
+
+{% block content %}
+
+<p> You were randomly selected to receive an additional bonus payment of {{Constants.extraDonation}}! </p>
+
+<p> Moreover, we would like to give you the opportunity to share this extra payment with the  <b> American Society for the Prevention of Cruelty to Animals (ASPCA)</b>. </p>
+
+<p>If you are unfamiliar with the work done by the ASPCA, please read the below before your proceed.</p>
+
+    <img src="{% static "conformity/aspca.png" %}" height="200" width="200" />
+
+<p>The mission of the American Society for the Prevention of Cruelty to Animals is to provide effective means for the prevention of cruelty to animals throughout the United States. </p>
+
+<p> The ASPCA was the first humane society to be established in North America and is, today, one of the largest in the world. The ASPCA acts on the belief that animals are entitled to kind and respectful treatment at the hands of humans and must be protected under the law. Headquartered in New York City, the ASPCA maintains a strong local presence, and with programs that extend our anti-cruelty mission across the country, we are recognized as a national animal welfare organization. We are a privately funded 501(c)(3) not-for-profit corporation, and are proud to boast more than 2 million supporters across the country. </p>
+
+<p> If you want to learn more about the American Society for the Prevention of Cruelty to Animals, feel free to follow this link: <a href="https://www.aspca.org/about-us" target="_blank"> Society for the Prevention of Cruelty to Animals Website </a>.</p>
+
+   {% next_button %}
+
+
+{% endblock %}           
+
+
+

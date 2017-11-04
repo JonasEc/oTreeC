@@ -1,0 +1,25 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+
+{% block title %}
+Would you like to share your extra payment?
+{% endblock %}
+
+{% block content %}
+
+<p> You were randomly selected to receive an additional bonus payment of {{Constants.extraDonation}}. You can now decide how much of this <b>additional</b> money you would like to donate to the American Society for the Prevention of Cruelty to Animals (ASPCA). You can decide to donate anything between $0 and {{Constants.extraDonation}}. Regardless of how much you decide to donate, you will still receive your full show-up fee and any other bonus payments you may earn during this experiment. </p>
+
+
+
+{% formfield player.DonationDecision %}
+
+
+
+   {% next_button %}
+
+
+{% endblock %}           
+
+
+

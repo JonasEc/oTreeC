@@ -14,6 +14,44 @@ class IRB(Page):
 	def is_displayed(self):
 		return self.round_number == 1
 
+
+
+class donateFirst(Page):
+	def is_displayed(self):
+		return self.round_number == 1 and self.participant.vars.get("DonateFirst") and Constants.extraDonationTreat
+
+class donateFirstDecision(Page):
+	def is_displayed(self):
+		return self.round_number == 1 and self.participant.vars.get("DonateFirst") and Constants.extraDonationTreat
+
+	def DonationDecision_max(self):
+		return Constants.extraDonation
+
+	form_model = models.Player
+	form_fields = ['DonationDecision']
+
+	def before_next_page(self):
+		self.player.participant.vars["DonationAmount"] = self.player.DonationDecision
+
+class donateSecond(Page):
+	def is_displayed(self):
+		return self.round_number == Constants.num_rounds and self.participant.vars.get("DonateSecond") and Constants.extraDonationTreat
+
+class donateSecondDecision(Page):
+	def is_displayed(self):
+		return self.round_number == Constants.num_rounds and self.participant.vars.get("DonateSecond") and Constants.extraDonationTreat
+
+	def DonationDecision_max(self):
+		return Constants.extraDonation
+
+	form_model = models.Player
+	form_fields = ['DonationDecision']
+
+	def before_next_page(self):
+		self.player.participant.vars["DonationAmount"] = self.player.DonationDecision
+
+
+
 class instructions(Page):
 	def is_displayed(self):
 		return self.round_number == 1
@@ -40,7 +78,7 @@ class quizz(Page):
 			summand = summand + ["Question 1"]
 		if values["truefalse1"] != 1:
 			summand = summand + ["Question 2"]
-		if values["truefalse2"] != Constants.feedback:
+		if values["truefalse2"] == Constants.noFeedback:
 			summand = summand + ["Question 3"]
 		if values["truefalse3"] != False:
 			summand = summand + ["Question 4"]
@@ -62,14 +100,26 @@ class quizz(Page):
 			summand = summand + ["Question 12"]	
 		if len(summand) == 1:	
 			text = "Your answer to the following question is incorrect: " + ", ".join(summand) + "."
+			current = self.participant.vars.get("NumberMistakes")
+			if current:
+				if summand > current:
+					self.participant.vars["NumberMistakes"] = summand
+			else:
+				self.participant.vars["NumberMistakes"] = summand
 			return text	
 		elif len(summand) > 1:	
 			text = "Your answers to the following questions are incorrect: " + ", ".join(summand) + "."
+			current = self.participant.vars.get("NumberMistakes")
+			if current:
+				if summand > current:
+					self.participant.vars["NumberMistakes"] = summand
+			else:
+				self.participant.vars["NumberMistakes"] = summand
 			return text	
 		# summand = 0
 		# if values["truefalse1"] != 1:
 		# 	summand += 1
-		# if values["truefalse2"] != Constants.feedback:
+		# if values["truefalse2"] != Constants.noFeedback:
 		# 	summand += 1
 		# if values["truefalse3"] != False:
 		# 	summand += 1
@@ -131,14 +181,14 @@ class confidence(Page):
 
 class feedback(Page):
 	def is_displayed(self):
-		return Constants.feedback and self.round_number < Constants.num_rounds
+		return Constants.noFeedback == False and self.round_number < Constants.num_rounds
 	def vars_for_template(self):
 		return {"median": self.player.calcmedian(),  "one": 1, "money": Constants.money[self.player.calcmedian()-1], "charity":Constants.charities[self.round_number-1]}
 
 
 class feedbackLast(Page):
 	def is_displayed(self):
-		return Constants.feedback and self.round_number == Constants.num_rounds
+		return Constants.noFeedback == False and self.round_number == Constants.num_rounds
 	def vars_for_template(self):
 		return {"median": self.player.calcmedian(), "one": 1, "money": Constants.money[self.player.calcmedian()-1], "charity":Constants.charities[self.round_number-1]}
 
@@ -228,6 +278,8 @@ class ResultsWaitPage(WaitPage):
 page_sequence = [
 	welcome,
 	IRB,
+	donateFirst,
+	donateFirstDecision,
 	instructions,
 	quizz,
 	quizzWaitPage,
@@ -240,6 +292,8 @@ page_sequence = [
 	publicWaitingInstructions,
 	waiting,
 	notwaiting,
+	donateSecond,
+	donateSecondDecision,
 	survey1,
 	survey2,
 	payment

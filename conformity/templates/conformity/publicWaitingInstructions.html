@@ -2,14 +2,14 @@
 {% load staticfiles otree_tags %}
 
 {% block title %}
-    Instructions for Public Decision Implementation
+    Further Instructions
 {% endblock %}
 
 {% block content %}
 
 <p> The computer selected Round {{round}}. For this round, you chose <b>{{committedMin}} {% ifequal committedMin one %} minute {% else %} minutes {% endifequal %}</b>. So, if you are the randomly selected participant, you will have to wait for {{committedMin}} {% ifequal committedMin one %} minute {% else %} minutes {% endifequal %} and will generate a donation of {{money}} for the Make-A-Wish Foundation and children in {{charity}}. </p>
 
-<p> <b> At this time, write {{comittedMin}} on your nametag and place your nametag in a visible location on your shirt. </b>. </p>
+<p> <b> At this time, write {{comittedMin}} on your nametag and place your nametag in a visible location on your shirt. </b></p>
 
 <p> Next, the study leader will ask people to come up to the front of the room according to how long they chose to stay.  </p>
 
