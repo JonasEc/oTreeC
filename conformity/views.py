@@ -16,39 +16,23 @@ class IRB(Page):
 
 
 
-class donateFirst(Page):
+class donationFirst(Page):
 	def is_displayed(self):
-		return self.round_number == 1 and self.participant.vars.get("DonateFirst") and Constants.extraDonationTreat
+		return  Constants.extraDonationTreat and self.round_number == Constants.num_rounds
 
-class donateFirstDecision(Page):
+class donationFirstDecision(Page):
 	def is_displayed(self):
-		return self.round_number == 1 and self.participant.vars.get("DonateFirst") and Constants.extraDonationTreat
-
-	def DonationDecision_max(self):
-		return Constants.extraDonation
+		return   Constants.extraDonationTreat  and self.round_number == Constants.num_rounds
 
 	form_model = models.Player
 	form_fields = ['DonationDecision']
 
+	def vars_for_template(self):
+		return {"left_side": Constants.extraDonation, "right_side_amounts_charity": Constants.right_side_amounts_charity}
+	
 	def before_next_page(self):
 		self.player.participant.vars["DonationAmount"] = self.player.DonationDecision
 
-class donateSecond(Page):
-	def is_displayed(self):
-		return self.round_number == Constants.num_rounds and self.participant.vars.get("DonateSecond") and Constants.extraDonationTreat
-
-class donateSecondDecision(Page):
-	def is_displayed(self):
-		return self.round_number == Constants.num_rounds and self.participant.vars.get("DonateSecond") and Constants.extraDonationTreat
-
-	def DonationDecision_max(self):
-		return Constants.extraDonation
-
-	form_model = models.Player
-	form_fields = ['DonationDecision']
-
-	def before_next_page(self):
-		self.player.participant.vars["DonationAmount"] = self.player.DonationDecision
 
 
 
@@ -209,12 +193,14 @@ class waiting(Page):
 		return self.player.participant.vars.get("committedMinutes")*60
 	def vars_for_template(self):
 		return {"one": 1, "committed": self.player.participant.vars.get("committedMinutes")*60,"committedMin": self.player.participant.vars.get("committedMinutes"), "money": Constants.money[self.player.timeMinutes -1],"round": self.session.vars.get("selectedRound"), "charity":Constants.charities[self.session.vars.get("selectedRound")-1] }
-
+	def before_next_page(self):
+		self.player.set_payoffs()
 
 class notwaiting(Page):
 	def is_displayed(self):
 		return self.round_number == Constants.num_rounds and self.player.id_in_group != self.session.vars.get("selectedPlayer")
-
+	def before_next_page(self):
+		self.player.set_payoffs()
 
 
 
@@ -236,8 +222,7 @@ class survey2(Page):
 	form_model = models.Player
 	form_fields = ['studentID', 'sex', 'age', 'gradYear', 'school', 'econMajor', 'GPA']
 
-	def before_next_page(self):
-		self.player.set_payoffs()
+
 
 class payment(Page):
 	def is_displayed(self):
@@ -255,7 +240,7 @@ class payment(Page):
 			waiting = True
 		else:
 			waiting = False
-		return {"payment": self.player.payoff, "share": self.player.participant.vars["DonationAmount"], "extra": extra, "waiting": waiting, "round": self.session.vars.get("selectedRound"), "charity": Constants.charities[self.session.vars.get("selectedRound")-1], "money": Constants.money[self.player.timeMinutes -1]} 	
+		return {"payment": self.player.payoff, "shareBool": self.player.participant.vars["outcomeCharityOwn"], "extra": extra, "waiting": waiting, "round": self.session.vars.get("selectedRound"), "charity": Constants.charities[self.session.vars.get("selectedRound")-1], "money": Constants.money[self.player.timeMinutes -1]} 	
 
 
 
@@ -276,10 +261,8 @@ class ResultsWaitPage(WaitPage):
 				player.participant.vars["committedMinutes"] = player.commitWait()
 
 page_sequence = [
-	welcome,
-	IRB,
-	donateFirst,
-	donateFirstDecision,
+	# welcome,
+	# IRB,
 	instructions,
 	quizz,
 	quizzWaitPage,
@@ -289,12 +272,12 @@ page_sequence = [
 	ResultsWaitPage,
 	feedback,
 	feedbackLast,
+	survey1,
+	survey2,
+	donationFirst,
+	donationFirstDecision,
 	publicWaitingInstructions,
 	waiting,
 	notwaiting,
-	donateSecond,
-	donateSecondDecision,
-	survey1,
-	survey2,
 	payment
 ]

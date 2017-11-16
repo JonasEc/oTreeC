@@ -27,17 +27,17 @@ class Constants(BaseConstants):
 	random.seed(seeder)
 
 ### Charities:
-	charities = ["Amarillo","Austin"]#,"El Paso","Fort Worth","Houston","Irving","Lubbock","Midland","San Antonio","Tyler"] 
+	charities = ["Amarillo","Austin","El Paso","Fort Worth","Houston","Irving","Lubbock","Midland","San Antonio","Tyler"] 
 
 ### Base constants
 	name_in_url = 'Experiment'
-	players_per_group = 2
+	players_per_group = 16
 	num_rounds = len(charities)
 
 ### TREATMENT:
 	public = False
 	extraDonationTreat = True
-	noFeedback = True
+	noFeedback = False
 	numberunderstandingquestions = 11
 	accuracy = 1
 
@@ -47,13 +47,17 @@ class Constants(BaseConstants):
 	bonus = c(5)
 	bonusForConfidence = 3
 	confidenceBonus =c(bonusForConfidence)
-	extraDonation = c(10)
+	extraDonationNum = 5	
+	extraDonation = c(extraDonationNum)
 
 	r = np.linspace(1,bonusForConfidence,9)
-	right_side_amounts = [c(0.05), c(0.10), c(0.25), c(0.50), c(0.75)] + [c(float(k)) for k in r]
+	r2 = np.linspace(0,extraDonationNum,13)
+	right_side_amounts = [c(0.05), c(0.10), c(0.25), c(0.50), c(0.75)] + [c(round(float(k),2)) for k in r]
+	right_side_amounts_charity = list(reversed([c(float(k)) for k in r2]))
+
 
 ### TIMER:
-	timerPractice = 15
+	timerPractice = 180
 
 
 
@@ -70,14 +74,14 @@ class Subsession(BaseSubsession):
 		selectedIncentive = random.randint(1,2)
 		self.session.vars["selectedIncentive"] = selectedIncentive
 
-		for player in self.get_players():
-			selectedExtra = random.random()
-			if selectedExtra > 0.5:
-				player.participant.vars["DonateFirst"] = True
-				player.participant.vars["DonateSecond"] = False
-			else:
-				player.participant.vars["DonateFirst"] = False
-				player.participant.vars["DonateSecond"] = True
+		# for player in self.get_players():
+		# 	selectedExtra = random.random()
+		# 	if selectedExtra > 0.5:
+		# 		player.participant.vars["DonateFirst"] = True
+		# 		player.participant.vars["DonateSecond"] = False
+		# 	else:
+		# 		player.participant.vars["DonateFirst"] = False
+		# 		player.participant.vars["DonateSecond"] = True
 
 
 
@@ -114,7 +118,7 @@ class Player(BasePlayer):
 	medianCommitment = models.PositiveIntegerField()
 	timeMinutes = models.PositiveIntegerField()
 
-	DonationDecision = models.CurrencyField(min=c(0),widget = widgets.SliderInput(), verbose_name="Please tell us how much of your extra payment, you would like to donate to the ASPCA:")
+	DonationDecision = models.CurrencyField()
 
 	def calcmedian(self):
 		commits = []
@@ -181,7 +185,13 @@ class Player(BasePlayer):
 			bonus1 = c(0)
 
 		if Constants.extraDonationTreat:
-			bonus3 = Constants.extraDonation - self.participant.vars.get("DonationAmount")
+			randomRow = random.randint(0,len(Constants.right_side_amounts_charity)-1)
+			if Constants.right_side_amounts_charity[randomRow] > self.participant.vars.get("DonationAmount"):
+				bonus3 = Constants.right_side_amounts_charity[randomRow]
+				self.participant.vars["outcomeCharityOwn"] = False
+			else:
+				bonus3 = c(0)
+				self.participant.vars["outcomeCharityOwn"] = True
 		else:
 			bonus3 = c(0)
 

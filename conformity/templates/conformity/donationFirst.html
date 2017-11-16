@@ -1,0 +1,41 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+
+{% block title %}
+Extra Bonus Payment Decision!
+{% endblock %}
+
+{% block content %}
+
+<p> On the next page, we will ask you whether you prefer some amount of money X for yourself or whether you would rather that we donate {{Constants.ExtraDonation}} to GiveDirectly so that they can transfer this money to people in the most dire need. </p>
+
+<p> <br> </p>
+
+<p>If you are unfamiliar with the work done by the GiveDirectly, please read the below before your proceed.</p>
+
+<p> <br> </p>
+<p> <br> </p>
+<p> <br> </p>
+
+
+    <img src="{% static "conformity/GiveDirectly.png" %}" />
+
+<p> <br> </p>
+
+<p>The mission of GiveDirectly is to send money directly to the extreme poor. </p>
+
+<p> GiveDirectly aims to reshape international giving, making direct transfers to the poor the benchmark against which other, more expensive approaches are evaluated. GiveDirectly uses modern electronic payment technology to cut out most of the overhead in standard charitable work and operates on the basis of accummulating evidence showing the efficacy of giving money directly to those most in need. GiveDirectly currently operates in Kenya and Uganda where it supplies eligible recipients with roughly a year's budget to allow them to feed their families, send their children to school, and to invest in life stock and housing. </p>
+
+<p> <br> </p>
+
+<p> If you want to learn more about GiveDirectly, feel free to follow this link: <a href="https://givedirectly.org/vision" target="_blank"> GiveDirectly.org </a>.</p>
+
+<p> <br> </p>
+   {% next_button %}
+
+
+{% endblock %}           
+
+
+
