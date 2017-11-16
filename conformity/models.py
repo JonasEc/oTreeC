@@ -31,7 +31,7 @@ class Constants(BaseConstants):
 
 ### Base constants
 	name_in_url = 'Experiment'
-	players_per_group = 16
+	players_per_group = 18
 	num_rounds = len(charities)
 
 ### TREATMENT:
@@ -66,7 +66,9 @@ class Subsession(BaseSubsession):
 
 #### PAYOFF RANDOMISATION:
 	def creating_session(self):
-		selectedPlayer = random.randint(1,Constants.players_per_group)	
+		pl = self.get_players()
+		self.session.vars["NumPlayers"] = len(pl)
+		selectedPlayer = random.randint(1,len(pl))	
 		self.session.vars["selectedPlayer"] = selectedPlayer
 
 		self.session.vars["selectedRound"] = random.randint(1, Constants.num_rounds)
@@ -125,7 +127,7 @@ class Player(BasePlayer):
 		for player in self.get_others_in_group():
 			commits.append(player.commitment)
 		commits = sorted(commits)
-		self.medianCommitment = commits[ceil(Constants.players_per_group/2)-1]
+		self.medianCommitment = commits[ceil(self.session.vars.get("NumPlayers") /2)-1]
 		return self.medianCommitment
 
 	def commitWait(self):

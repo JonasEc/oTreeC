@@ -113,12 +113,31 @@ SESSION_CONFIG_DEFAULTS = {
 
 SESSION_CONFIGS = [
     {
-        'name': 'Conformity',
+        'name': 'Conformity16',
         'display_name': 'Experiment',
-        'num_demo_participants': 2,
+        'num_demo_participants': 18,
         'app_sequence': ['conformity'],
-    }
+    },
+    # {
+    #     'name': 'Conformity14',
+    #     'display_name': 'Experiment',
+    #     'num_demo_participants': 14,
+    #     'app_sequence': ['conformity'],
+    # },
+    # {
+    #     'name': 'Conformity18',
+    #     'display_name': 'Experiment',
+    #     'num_demo_participants': 18,
+    #     'app_sequence': ['conformity'],
+    # },
+    # {
+    #     'name': 'Conformity18',
+    #     'display_name': 'Experiment',
+    #     'num_demo_participants': 2,
+    #     'app_sequence': ['conformity'],
+    # }
 ]
+
 
 # anything you put after the below line will override
 # oTree's default settings. Use with caution.
