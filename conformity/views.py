@@ -6,32 +6,15 @@ from .models import Constants
 
 ### INTRO PAGES
 
-class welcome(Page):
-	def is_displayed(self):
-		return self.round_number == 1
+# class welcome(Page):
+# 	def is_displayed(self):
+# 		return self.round_number == 1
 
-class IRB(Page):
-	def is_displayed(self):
-		return self.round_number == 1
+# class IRB(Page):
+# 	def is_displayed(self):
+# 		return self.round_number == 1
 
 
-
-class donationFirst(Page):
-	def is_displayed(self):
-		return  self.session.config.get('extraDonationTreat') and self.round_number == Constants.num_rounds
-
-class donationFirstDecision(Page):
-	def is_displayed(self):
-		return   self.session.config.get('extraDonationTreat')  and self.round_number == Constants.num_rounds
-
-	form_model = models.Player
-	form_fields = ['DonationDecision']
-
-	def vars_for_template(self):
-		return {"left_side": Constants.extraDonation, "right_side_amounts_charity": Constants.right_side_amounts_charity}
-	
-	def before_next_page(self):
-		self.player.participant.vars["DonationAmount"] = self.player.DonationDecision
 
 
 
@@ -41,6 +24,8 @@ class instructions(Page):
 		return self.round_number == 1
 	def vars_for_template(self):
 		return {  "min": Constants.right_side_amounts[0], "public": self.session.config.get('public'), "noFeedback": self.session.config.get('noFeedback'), "max": Constants.right_side_amounts[len(Constants.right_side_amounts)-1], "number": len(Constants.right_side_amounts)}
+	def before_next_page(self):
+		return self.player.makePartIntoField()
 
 class quizz(Page):
 	def is_displayed(self):
@@ -181,6 +166,26 @@ class feedbackLast(Page):
 		return {"median": self.player.calcmedian(), "one": 1, "money": Constants.money[self.player.calcmedian()-1], "charity":Constants.charities[self.round_number-1]}
 
 
+class donationFirst(Page):
+	def is_displayed(self):
+		return  self.session.config.get('extraDonationTreat') and self.round_number == Constants.num_rounds
+
+class donationFirstDecision(Page):
+	def is_displayed(self):
+		return   self.session.config.get('extraDonationTreat')  and self.round_number == Constants.num_rounds
+
+	form_model = models.Player
+	form_fields = ['DonationDecision']
+
+	def vars_for_template(self):
+		return {"left_side": Constants.extraDonation, "right_side_amounts_charity": Constants.right_side_amounts_charity}
+	
+	def before_next_page(self):
+		self.player.participant.vars["DonationAmount"] = self.player.DonationDecision
+
+
+
+
 class publicWaitingInstructions(Page):
 	def is_displayed(self):
 		return self.round_number == Constants.num_rounds  and self.session.config.get('public') == True
@@ -270,14 +275,14 @@ page_sequence = [
 	instructions,
 	quizz,
 	quizzWaitPage,
-	practice,
-	commit,
-	confidence,
-	ResultsWaitPage,
-	feedback,
-	feedbackLast,
-	survey1,
-	survey2,
+	# practice,
+	# commit,
+	# confidence,
+	# ResultsWaitPage,
+	# feedback,
+	# feedbackLast,
+	# survey1,
+	# survey2,
 	donationFirst,
 	donationFirstDecision,
 	publicWaitingInstructions,

@@ -159,7 +159,15 @@ class Player(BasePlayer):
 	econMajor= models.BooleanField(verbose_name="Are you an economics major?",choices=[[1, 'Yes'],[0, 'No']],widget=widgets.RadioSelect())
 	GPA = models.FloatField(verbose_name="What is your GPA (on a 4.0 scale)?", min=0,max=4)
 
+####### DATA FROM INTERNAL STUFF
+	selectedPlayer = models.BooleanField()
+	selectedRound = models.PositiveIntegerField()
+	selectedIncentive = models.PositiveIntegerField()
 
+	def makePartIntoField(self):
+		self.selectedPlayer = self.session.vars["selectedPlayer"]
+		self.selectedRound = self.session.vars["selectedRound"]
+		self.selectedIncentive = self.session.vars["selectedIncentive"]
 
 ### SET PAYOFF
 	def set_payoffs(self):
@@ -191,13 +199,16 @@ class Player(BasePlayer):
 				bonus2 = Constants.right_side_amounts[randomVar]
 			bonus1 = c(0)
 
-		if Constants.extraDonationTreat:
+		if self.session.vars.get("extraDonationTreat"):
 			randomRow = random.randint(0,len(Constants.right_side_amounts_charity)-1)
 			if Constants.right_side_amounts_charity[randomRow] > self.participant.vars.get("DonationAmount"):
 				bonus3 = Constants.right_side_amounts_charity[randomRow]
 				self.participant.vars["outcomeCharityOwn"] = False
+				self.charityDonation = c(0)
+
 			else:
 				self.participant.vars["charityDonation"] = Constants.extraDonation
+				self.charityDonation = Constants.extraDonation
 				bonus3 = c(0)
 				self.participant.vars["outcomeCharityOwn"] = True
 		else:
