@@ -18,11 +18,11 @@ class IRB(Page):
 
 class donationFirst(Page):
 	def is_displayed(self):
-		return  Constants.extraDonationTreat and self.round_number == Constants.num_rounds
+		return  self.session.config.get('extraDonationTreat') and self.round_number == Constants.num_rounds
 
 class donationFirstDecision(Page):
 	def is_displayed(self):
-		return   Constants.extraDonationTreat  and self.round_number == Constants.num_rounds
+		return   self.session.config.get('extraDonationTreat')  and self.round_number == Constants.num_rounds
 
 	form_model = models.Player
 	form_fields = ['DonationDecision']
@@ -40,11 +40,15 @@ class instructions(Page):
 	def is_displayed(self):
 		return self.round_number == 1
 	def vars_for_template(self):
-		return {  "min": Constants.right_side_amounts[0], "max": Constants.right_side_amounts[len(Constants.right_side_amounts)-1], "number": len(Constants.right_side_amounts)}
+		return {  "min": Constants.right_side_amounts[0], "public": self.session.config.get('public'), "noFeedback": self.session.config.get('noFeedback'), "max": Constants.right_side_amounts[len(Constants.right_side_amounts)-1], "number": len(Constants.right_side_amounts)}
 
 class quizz(Page):
 	def is_displayed(self):
 		return self.round_number == 1
+	def vars_for_template(self):
+			return { "public": self.session.config.get('public'), "noFeedback": self.session.config.get('noFeedback')}
+
+
 
 	form_model = models.Player
 	def get_form_fields(self):
@@ -62,11 +66,11 @@ class quizz(Page):
 			summand = summand + ["Question 1"]
 		if values["truefalse1"] != 1:
 			summand = summand + ["Question 2"]
-		if values["truefalse2"] == Constants.noFeedback:
+		if values["truefalse2"] == self.session.config.get('noFeedback'):
 			summand = summand + ["Question 3"]
 		if values["truefalse3"] != False:
 			summand = summand + ["Question 4"]
-		if values["truefalse4"] != Constants.public:
+		if values["truefalse4"] != self.session.config.get('public'):
 			summand = summand + ["Question 5"]
 		if values["truefalse5"] != False:
 			summand = summand + ["Question 6"]	
@@ -165,21 +169,21 @@ class confidence(Page):
 
 class feedback(Page):
 	def is_displayed(self):
-		return Constants.noFeedback == False and self.round_number < Constants.num_rounds
+		return self.session.config.get('noFeedback') == False and self.round_number < Constants.num_rounds
 	def vars_for_template(self):
 		return {"median": self.player.calcmedian(),  "one": 1, "money": Constants.money[self.player.calcmedian()-1], "charity":Constants.charities[self.round_number-1]}
 
 
 class feedbackLast(Page):
 	def is_displayed(self):
-		return Constants.noFeedback == False and self.round_number == Constants.num_rounds
+		return self.session.config.get('noFeedback') == False and self.round_number == Constants.num_rounds
 	def vars_for_template(self):
 		return {"median": self.player.calcmedian(), "one": 1, "money": Constants.money[self.player.calcmedian()-1], "charity":Constants.charities[self.round_number-1]}
 
 
 class publicWaitingInstructions(Page):
 	def is_displayed(self):
-		return self.round_number == Constants.num_rounds  and Constants.public == True
+		return self.round_number == Constants.num_rounds  and self.session.config.get('public') == True
 	def vars_for_template(self):
 #		return {"one": 1, "committed": self.player.participant.vars.get("committedMinutes")*60,"committedMin": self.player.participant.vars.get("committedMinutes"), "money": Constants.money[self.player.timeMinutes -1],"round": self.session.vars.get("selectedRound"), "charity":Constants.charities[self.session.vars.get("selectedRound")-1] }
 		return {"one": 1, "committed": self.player.timeMinutes*60,"committedMin": self.player.timeMinutes, "money": Constants.money[self.player.timeMinutes -1],"round": self.session.vars.get("selectedRound"), "charity":Constants.charities[self.session.vars.get("selectedRound")-1] }
@@ -240,7 +244,7 @@ class payment(Page):
 			waiting = True
 		else:
 			waiting = False
-		return {"payment": self.player.payoff, "shareBool": self.player.participant.vars.get("outcomeCharityOwn"), "extra": extra, "waiting": waiting, "round": self.session.vars.get("selectedRound"), "charity": Constants.charities[self.session.vars.get("selectedRound")-1], "money": Constants.money[self.player.timeMinutes -1]} 	
+		return {"payment": self.player.payoff, "extraDonationTreat": self.session.config.get("extraDonationTreat"), "shareBool": self.player.participant.vars.get("outcomeCharityOwn"), "extra": extra, "waiting": waiting, "round": self.session.vars.get("selectedRound"), "charity": Constants.charities[self.session.vars.get("selectedRound")-1], "money": Constants.money[self.player.timeMinutes -1]} 	
 
 
 

@@ -30,7 +30,7 @@ class Constants(BaseConstants):
 	random.seed(seeder)
 
 ### Charities:
-	charities = ["Amarillo","Austin","El Paso","Fort Worth","Houston","Irving","Lubbock","Midland","San Antonio","Tyler"] 
+	charities = ["Amarillo","Austin"]#,"El Paso","Fort Worth","Houston","Irving","Lubbock","Midland","San Antonio","Tyler"] 
 
 ### Base constants
 	name_in_url = 'Experiment'
@@ -38,9 +38,9 @@ class Constants(BaseConstants):
 	num_rounds = len(charities)
 
 ### TREATMENT:
-	public = settings.SESSION_CONFIGS[0].get('public')
-	extraDonationTreat = settings.SESSION_CONFIGS[0].get('extraDonationTreat')
-	noFeedback = settings.SESSION_CONFIGS[0].get('noFeedback')
+	# public = settings.SESSION_CONFIGS[0].get('public')
+	# extraDonationTreat = settings.SESSION_CONFIGS[0].get('extraDonationTreat')
+	# noFeedback = settings.SESSION_CONFIGS[0].get('noFeedback')
 	# public = False
 	# extraDonationTreat = True
 	# noFeedback = False

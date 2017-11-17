@@ -89,11 +89,11 @@ In each round, on the screen after you make your guess about <b>others'</b> medi
 
 <p>
 <b>Information on Others' Decisions</b><br>
-{% if Constants.noFeedback %} You will not receive any information about others' decisions during this experiment. Neither will others learn anything about your deicisions during this experiment.
+{% if noFeedback %} You will not receive any information about others' decisions during this experiment. Neither will others learn anything about your deicisions during this experiment.
 {% else %} During Round 1, you will not receive any information on participants' decisions.
 </p>
 
-	{% if Constants.public %} 
+	{% if public %} 
 	<p>
 	During Rounds 2 to {{Constants.num_rounds}}, you will learn the <b>median amount</b> of time other participants in this room (excluding you) chose to stay in the previous round.  For instance, in Round 2, you will learn the median amount of time other participants in this room chose to stay in Round 1. Similarly, in Round 7, you will learn the median amount of time other participants in this room chose to stay in Round 6. Note that your own decisions will NOT impact this median that you are shown. 
 	</p>
