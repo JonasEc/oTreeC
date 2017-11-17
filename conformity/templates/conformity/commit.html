@@ -1,0 +1,92 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+
+{% block title %}
+Your commitment decision for Make-A-Wish Foundation and children in {{charity}}:
+{% endblock %}
+
+{% block content %}
+
+
+<p> You may stay 0 - 35 minutes to earn money for the Make-A-Wish Foundation in {{charity}}. The following indicates how much money you would earn according to the TOTAL number of minutes you stay: </p>
+
+
+ <table class="table1" align = "center">
+  <tr>
+    <th>Time To Wait</th>
+    <th>Donation Earned</th>
+  </tr>
+  {% for i in listCommits1%} <tr>
+    <td>{{forloop.counter}} {%if forloop.first %}minute{% else %}minutes{% endif %} </td>
+    <td>{{i}} </td>
+  </tr> {% endfor %}
+</table> 
+
+ <table class="table2" align = "center">
+  <tr>
+    <th>Time To Wait</th>
+    <th>Donation Earned</th>
+  </tr>
+  {% for i in listCommits2%} <tr>
+    <td>{{forloop.counter|add:"12"}} minutes </td>
+    <td>{{i}} </td>
+  </tr> {% endfor %}
+</table> 
+
+ <table class="table3" align = "center">
+  <tr>
+    <th>Time To Wait</th>
+    <th>Donation Earned</th>
+  </tr>
+  {% for i in listCommits3%}<tr>
+    <td>{% if forloop.last %} &nbsp; {% else %} {{forloop.counter|add:"24"}} minutes {% endif %}</td>
+    <td>{% if forloop.last %} &nbsp; {% else %} {{i}} {% endif %} </td>
+  </tr> {% endfor %}
+</table> 
+
+
+
+<p> <b> What is the MEDIAN number of minutes YOU BELIEVE others (excluding you) will stay and earn money for Make-A-Wish Foundation, when any money one earns will be directed towards helping children in {{charity}}? </b> </p>
+	
+	{% formfield player.belief with label="Believed Median Choice"  %}
+
+<p> <b>How many minutes (X) would you like to stay and earn money for Make-A-Wish Foundation, when any money you earn will be directed towards helping children in {{charity}}? </b></p>
+
+    {% formfield player.commitment with label="Your Choice X"  %}
+
+
+
+    {% next_button %}
+
+{% endblock %}
+
+
+{% block styles %}
+
+ <style type="text/css">
+ table.table1 {
+     border: 1px solid black;
+     background-color: #FFFACD;
+     width: 33%; 
+     float:left;
+     margin-bottom: 1cm}
+
+ table.table3 {
+     border: 1px solid black;
+     background-color: #FFFACD;
+     width: 33%; 
+     float:left;
+     margin-bottom: 1cm}
+
+ table.table2 {
+     border: 1px solid black;
+     background-color: #AFEEEE;
+     width: 33%;
+     float:left;
+     margin-bottom: 1cm }
+
+ </style>
+
+{% endblock %}
+ 

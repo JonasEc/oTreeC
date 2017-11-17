@@ -1,0 +1,56 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Understanding Questions
+{% endblock %}
+
+{% block content %}
+
+    <p>
+        Please answer the following questions carefully. You cannot proceed unless you answer all questions correctly.
+    </p>
+
+    {% for field in form %}
+        {% formfield field %}
+        {% ifequal forloop.revcounter two %} <img class= "bottom" src="{% static 'conformity/example2.png' %}"  /> {% endifequal %} {% ifequal forloop.revcounter one %} <img class= "bottom" src="{% static 'conformity/example3.png' %}"  /> {% endifequal %}
+    {% endfor %}
+
+    {% next_button %}
+
+
+<div class="panel-group" id="accordion">
+    <div class="panel panel-warning" id="panel1">
+        <div class="panel-heading">
+             <h4 class="panel-title">
+        <a data-toggle="collapse" data-target="#collapseOne" class="btn-block" href="#collapseOne">
+            Instructions -- Click to collapse
+        </a>
+      </h4>
+
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" data-toggle="false">
+            <div class="panel-body">
+ 
+<small> {% include  "conformity/include.html"%} </small>
+        </div>
+    </div>
+</div>
+</div>
+
+
+    {% next_button %}
+
+{% endblock %}
+
+
+{% block styles %}
+
+ <style type="text/css">
+ img.bottom {
+     margin-bottom: 1cm}
+
+
+ </style>
+
+ {% endblock %}

@@ -1,0 +1,109 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+
+{% block title %}
+How confident are you in your guess?
+{% endblock %}
+
+
+{% block content %}
+
+<p> On this page, we would like to find out how confident you are in your guess that the median commitment by all players OTHER THAN YOU in this round is <b>{{belief}} </b> {% ifequal committed one %} minute {% else %} minutes {% endifequal %} of waiting. </p>
+
+<p> Think of each of the rows of the table below as asking: "Would you rather receive {{Constants.confidenceBonus}} if your guess of the median is within one minute of the median answer or would you rather receive [$X] for sure?" </p>
+
+<p>If this turns out to be the selected round and the computer chooses this question, the computer will then randomly choose one of the rows and implement your decision. If you have chosen the left-hand-side entry for that row, we will pay you {{left_side}} if your guess is within {{Constants.accuracy}} minute of the true median of everyone else's commitment. If you have chosen the right-hand-side entry of the randomly selceted row, we will pay you the stated amount. </p>
+
+<p> Note: When you click an option, we will automatically fill in the rest of the choices for you on the assumption that you think more money is better. You can adjust your choice as many times as you like before moving on. </p>
+
+
+    <table class="table table-striped">
+        <colgroup>
+            <col width="45%">
+            <col width="10%">
+            <col width="45%">
+        </colgroup>
+        <tr>
+            <td align="right"><b>Left-Hand-Side</b></td>
+            <td></td>
+            <td align="left"><b>Right-Hand-Side</b></td>
+        </tr>
+        {% for amount in right_side_amounts %}
+            <tr>
+                <td align="right">
+                     <b>{{left_side}}</b> if guess (<b>{{belief}}{% ifequal committed one %} minute{% else %} minutes{% endifequal %}</b>) is <b>within {{Constants.accuracy}} minute</b> of true median </td>
+                <td align="middle">
+                    <input type="radio" name="amount_{{ amount|json }}" value="left"
+                           required>&nbsp;&nbsp;
+                    <input type="radio" name="amount_{{ amount|json }}"
+                           value="right" data-amount="{{ amount|json }}" required>
+                </td>
+                <td align="left">
+                    <b>{{amount}}</b> </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+    {{ form.errors }}
+    <input type="hidden" name="confidence" id="switchpoint"
+           value="3.5">
+           
+    {% next_button %}
+
+
+{% endblock %}          
+
+
+{% block scripts %}
+<script>
+$(document).ready(function () {
+    $('input[type=radio]').change(
+            function () {
+                var clickedRadio = this;
+                var afterClickedRadio = false;
+                var clickedNumber = 100;
+
+                var radios = document.querySelectorAll('input[type=radio]');
+
+                for (i = 0; i < radios.length; ++i) {
+                    var radio = radios[i];
+                    if (radio == clickedRadio) {
+                        afterClickedRadio = true;
+                        continue;
+                    }
+                    if (!afterClickedRadio  && radio.value == 'left') {
+                        radio.checked = true;
+                    }
+                    if (afterClickedRadio && radio.value == 'right' ) {
+                        radio.checked = true;
+                    }
+                }
+                for (i = 0; i < radios.length; ++i) {
+                    var radio = radios[i];
+                    if (radio == clickedRadio) {
+                        radio.checked = true;
+                    }
+                }
+            }
+    );
+});
+
+    $('button').click(function() {
+        var radios = document.querySelectorAll('input[type=radio]');
+
+
+        for (i = 0; i < radios.length; ++i) {
+            var radio = radios[i];
+            if (radio.value == 'right' && radio.checked) {
+                $('#switchpoint').val(radio.dataset.amount);
+                break;
+            } else {
+                $('#switchpoint').val(9999);
+            }
+        }
+    });
+
+</script>
+{% endblock %}

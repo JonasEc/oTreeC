@@ -1,0 +1,21 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    You are the selected player!
+{% endblock %}
+
+{% block content %}
+
+<p> You are the player whose decision to wait will be implemented! </p>
+
+<p> The selected round is Round {{round}}. </p>
+
+<p> In this round, you commited to wait for <b>{{committedMin}} {% ifequal comittedMin one %} minute {% else %} minutes {% endifequal %}</b>. </p>
+
+<p> Hence, you will now wait for <b>{{committed}} seconds</b> without doing anything while waiting. </p>
+
+<p> You are hence raising a donation of <b>{{money}}</b> for Make-A-Wish Foundation for children in <b>{{charity}}</b> </p>
+
+
+{% endblock %}

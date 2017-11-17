@@ -1,0 +1,147 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+
+{% block title %}
+Please make your selection
+{% endblock %}
+
+{% block content %}
+
+<p> This decision is a little like Question 2 that you answered above! For each row, please let us know whether you prefer the right-hand-side or the left-hand-side. The computer will randomly select one row and implement it. If you select the left-hand-side for some row and the computer selects this row, <b>we will donate {{Constants.extraDonation}} to GiveDirectly </b>on your behalf. If you select the right-hand-side, however, we will add the amount in that row in the right column to your bonus payment.</p>
+
+
+<p> Note: When you click an option, we will automatically fill in the rest of the choices for you on the assumption that you think more money is better. You can adjust your choice as many times as you like before moving on. </p>
+
+
+    <table class="table table-striped">
+        <colgroup>
+            <col width="45%">
+            <col width="10%">
+            <col width="45%">
+        </colgroup>
+        <tr>
+            <td align="right"><b>Left-Hand-Side</b></td>
+            <td></td>
+            <td align="left"><b>Right-Hand-Side</b></td>
+        </tr>
+        {% for amount in right_side_amounts_charity %}
+            <tr>
+                <td align="right">
+                     <b>{{left_side}}</b> for <b>GiveDirectly</b> </td>
+                <td align="middle">
+                    <input type="radio" name="amount_{{ amount|json }}" value="left"
+                           required>&nbsp;&nbsp;
+                    <input type="radio" name="amount_{{ amount|json }}"
+                           value="right" data-amount="{{ amount|json }}" required>
+                </td>
+                <td align="left">
+                    <b>{{amount}}</b> for yourself </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+    {{ form.errors }}
+    <input type="hidden" name="DonationDecision" id="switchpoint"
+           value="5">
+           
+    {% next_button %}
+
+
+{% endblock %}          
+
+
+{% block scripts %}
+<script>
+	$(document).ready(function () {
+	    $('input[type=radio]').change(
+	            function () {
+	                var clickedRadio = this;
+	                var afterClickedRadio = false;
+	                var clickedNumber = 100;
+
+	                var radios = document.querySelectorAll('input[type=radio]');
+
+	                for (i = 0; i < radios.length; ++i) {
+	                    var radio = radios[i];
+	                    if (radio == clickedRadio) {
+	                        afterClickedRadio = true;
+	                        continue;
+	                    }
+	                    if (!afterClickedRadio  && radio.value == 'right') {
+	                        radio.checked = true;
+	                    }
+	                    if (afterClickedRadio && radio.value == 'left' ) {
+	                        radio.checked = true;
+	                    }
+	                }
+	                for (i = 0; i < radios.length; ++i) {
+	                    var radio = radios[i];
+	                    if (radio == clickedRadio) {
+	                        radio.checked = true;
+	                    }
+	                }
+	            }
+	    );
+	});
+
+
+// $(document).ready(function () {
+//     $('input[type=radio]').change(
+//             function () {
+//                 var clickedRadio = this;
+//                 var afterClickedRadio = false;
+//                 var clickedNumber = 100;
+
+//                 var radios = document.querySelectorAll('input[type=radio]');
+
+//                 for (i = 0; i < radios.length; ++i) {
+//                     var radio = radios[i];
+//                     if (radio == clickedRadio) {
+//                         afterClickedRadio = true;
+//                         continue;
+//                     }
+//                     if (!afterClickedRadio  && radio.value == 'left') {
+//                         radio.checked = true;
+//                     }
+//                     if (afterClickedRadio && radio.value == 'right' ) {
+//                         radio.checked = true;
+//                     }
+//                 }
+//                 for (i = 0; i < radios.length; ++i) {
+//                     var radio = radios[i];
+//                     if (radio == clickedRadio) {
+//                         radio.checked = true;
+//                     }
+//                 }
+//             }
+//     );
+// });
+
+    $('button').click(function() {
+        var radios = document.querySelectorAll('input[type=radio]');
+
+        for (i = 0; i < radios.length; ++i) {
+            var radio = radios[radios.length - i];
+            if (radio.value == 'right' && radio.checked) {
+                $('#switchpoint').val(radio.dataset.amount);
+                break;
+            } else {
+                $('#switchpoint').val(5);
+            }
+        }
+    });
+    //     for (i = 0; i < radios.length; ++i) {
+    //         var radio = radios[i];
+    //         if (radio.value == 'right' && radio.checked) {
+    //             $('#switchpoint').val(radio.dataset.amount);
+    //             break;
+    //         } else {
+    //             $('#switchpoint').val(5);
+    //         }
+    //     }
+    // });
+
+</script>
+{% endblock %}
