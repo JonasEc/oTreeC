@@ -54,48 +54,42 @@ Please make your selection
 
 {% block scripts %}
 <script>
-	$(document).ready(function () {
-	    $('input[type=radio]').change(
-	            function () {
-	                var clickedRadio = this;
-	                var afterClickedRadio = false;
-	                var clickedNumber = 100;
-
-	                var radios = document.querySelectorAll('input[type=radio]');
-
-	                for (i = 0; i < radios.length; ++i) {
-	                    var radio = radios[i];
-	                    if (radio == clickedRadio) {
-	                        afterClickedRadio = true;
-	                        continue;
-	                    }
-	                    if (!afterClickedRadio  && radio.value == 'right') {
-	                        radio.checked = true;
-	                    }
-	                    if (afterClickedRadio && radio.value == 'left' ) {
-	                        radio.checked = true;
-	                    }
-	                }
-	                for (i = 0; i < radios.length; ++i) {
-	                    var radio = radios[i];
-	                    if (radio == clickedRadio) {
-	                        radio.checked = true;
-	                    }
-	                }
-	            }
-	    );
-	});
-
-
+    $(document).ready(function () {
+        $('input[type=radio]').change(
+                function () {
+                    var clickedRadio = this;
+                    var afterClickedRadio = false;
+                    var clickedNumber = 100;
+                    var radios = document.querySelectorAll('input[type=radio]');
+                    for (i = 0; i < radios.length; ++i) {
+                        var radio = radios[i];
+                        if (radio == clickedRadio) {
+                            afterClickedRadio = true;
+                            continue;
+                        }
+                        if (!afterClickedRadio  && radio.value == 'right') {
+                            radio.checked = true;
+                        }
+                        if (afterClickedRadio && radio.value == 'left' ) {
+                            radio.checked = true;
+                        }
+                    }
+                    for (i = 0; i < radios.length; ++i) {
+                        var radio = radios[i];
+                        if (radio == clickedRadio) {
+                            radio.checked = true;
+                        }
+                    }
+                }
+        );
+    });
 // $(document).ready(function () {
 //     $('input[type=radio]').change(
 //             function () {
 //                 var clickedRadio = this;
 //                 var afterClickedRadio = false;
 //                 var clickedNumber = 100;
-
 //                 var radios = document.querySelectorAll('input[type=radio]');
-
 //                 for (i = 0; i < radios.length; ++i) {
 //                     var radio = radios[i];
 //                     if (radio == clickedRadio) {
@@ -118,17 +112,15 @@ Please make your selection
 //             }
 //     );
 // });
-
     $('button').click(function() {
         var radios = document.querySelectorAll('input[type=radio]');
-
         for (i = 0; i < radios.length; ++i) {
-            var radio = radios[radios.length - i];
-            if (radio.value == 'right' && radio.checked) {
+            var radio = radios[i];
+            if (radio.value == 'right' && radio.checked == false) {
                 $('#switchpoint').val(radio.dataset.amount);
                 break;
             } else {
-                $('#switchpoint').val(5);
+                $('#switchpoint').val(-1);
             }
         }
     });
@@ -142,6 +134,5 @@ Please make your selection
     //         }
     //     }
     // });
-
 </script>
 {% endblock %}
