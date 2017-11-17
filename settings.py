@@ -115,12 +115,12 @@ SESSION_CONFIGS = [
     {
         'name': 'Conformity',
         'display_name': 'Experiment',
-        'num_demo_participants': 16,
+        'num_demo_participants': 2,
         'app_sequence': ['conformity'],
-        'perGroup': 16,
         'public' : False,
         'extraDonationTreat' : True,
         'noFeedback' : False,
+        'practiceWaiting': 180
     }#,
     # {
     #     'name': 'Conformity14',

@@ -240,7 +240,7 @@ class payment(Page):
 			waiting = True
 		else:
 			waiting = False
-		return {"payment": self.player.payoff, "shareBool": self.player.participant.vars["outcomeCharityOwn"], "extra": extra, "waiting": waiting, "round": self.session.vars.get("selectedRound"), "charity": Constants.charities[self.session.vars.get("selectedRound")-1], "money": Constants.money[self.player.timeMinutes -1]} 	
+		return {"payment": self.player.payoff, "shareBool": self.player.participant.vars.get("outcomeCharityOwn"), "extra": extra, "waiting": waiting, "round": self.session.vars.get("selectedRound"), "charity": Constants.charities[self.session.vars.get("selectedRound")-1], "money": Constants.money[self.player.timeMinutes -1]} 	
 
 
 

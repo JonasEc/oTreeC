@@ -34,12 +34,12 @@ class Constants(BaseConstants):
 
 ### Base constants
 	name_in_url = 'Experiment'
-	players_per_group = settings.SESSION_CONFIGS[0].get('perGroup')
+	players_per_group = None
 	num_rounds = len(charities)
 
 ### TREATMENT:
 	public = settings.SESSION_CONFIGS[0].get('public')
-	extraDonationTreat = settings.SESSION_CONFIGS[0].get('extraDonation')
+	extraDonationTreat = settings.SESSION_CONFIGS[0].get('extraDonationTreat')
 	noFeedback = settings.SESSION_CONFIGS[0].get('noFeedback')
 	# public = False
 	# extraDonationTreat = True
@@ -63,7 +63,7 @@ class Constants(BaseConstants):
 
 
 ### TIMER:
-	timerPractice = 180
+	timerPractice = settings.SESSION_CONFIGS[0].get('practiceWaiting')
 
 
 
@@ -72,7 +72,8 @@ class Subsession(BaseSubsession):
 
 #### PAYOFF RANDOMISATION:
 	def creating_session(self):
-		selectedPlayer = random.randint(1,Constants.players_per_group)	
+		self.session.vars["NumberOfPlayers"] = len(self.get_players())
+		selectedPlayer = random.randint(1,self.session.vars.get("NumberOfPlayers"))	
 		self.session.vars["selectedPlayer"] = selectedPlayer
 
 		self.session.vars["selectedRound"] = random.randint(1, Constants.num_rounds)
@@ -131,7 +132,7 @@ class Player(BasePlayer):
 		for player in self.get_others_in_group():
 			commits.append(player.commitment)
 		commits = sorted(commits)
-		self.medianCommitment = commits[ceil(Constants.players_per_group /2)-1]
+		self.medianCommitment = commits[ceil(self.session.vars.get("NumberOfPlayers")/2)-1]
 		return self.medianCommitment
 
 	def commitWait(self):
@@ -196,6 +197,7 @@ class Player(BasePlayer):
 				bonus3 = Constants.right_side_amounts_charity[randomRow]
 				self.participant.vars["outcomeCharityOwn"] = False
 			else:
+				self.participant.vars["charityDonation"] = Constants.extraDonation
 				bonus3 = c(0)
 				self.participant.vars["outcomeCharityOwn"] = True
 		else:
