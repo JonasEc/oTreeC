@@ -67,9 +67,9 @@ class quizz(Page):
 			summand = summand + ["Question 9"]	
 		if values["truefalse9"] != 2:
 			summand = summand + ["Question 10"]	
-		if values["truefalse10"] != 3:
+		if values["truefalse10"] != c(3):
 			summand = summand + ["Question 11"]	
-		if values["truefalse11"] != 2:
+		if values["truefalse11"] != c(2):
 			summand = summand + ["Question 12"]	
 		if len(summand) == 1:	
 			text = "Your answer to the following question is incorrect: " + ", ".join(summand) + "."
@@ -275,14 +275,14 @@ page_sequence = [
 	instructions,
 	quizz,
 	quizzWaitPage,
-	# practice,
-	# commit,
-	# confidence,
-	# ResultsWaitPage,
-	# feedback,
-	# feedbackLast,
-	# survey1,
-	# survey2,
+	practice,
+	commit,
+	confidence,
+	ResultsWaitPage,
+	feedback,
+	feedbackLast,
+	survey1,
+	survey2,
 	donationFirst,
 	donationFirstDecision,
 	publicWaitingInstructions,

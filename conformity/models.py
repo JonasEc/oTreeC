@@ -112,8 +112,8 @@ class Player(BasePlayer):
 	truefalse7 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'No additional time']],widget=widgets.RadioSelect(),verbose_name="Question 8: If you ARE the selected participant, you will have to wait:")
 	truefalse8 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'None of the above']],widget=widgets.RadioSelect(),verbose_name="Question 9: If you ARE NOT the selected participant, your earnings for Make-A-Wish Foundation will depend on:")
 	truefalse9 = models.PositiveIntegerField(choices=[[0, 'The amount of time you chose to stay in the selected round.'],[1, 'The amount of time others chose to stay in the selected round'],[2, 'No additional time']],widget=widgets.RadioSelect(),verbose_name="Question 10: If you ARE NOT the selected participant, you will have to wait:")
-	truefalse10 = models.PositiveIntegerField(verbose_name= "Question 11: Look at the decision table below. Please enter how much money (in whole dollars) the participant will be paid if the true median is 12 minutes and row number 5 is implemented by the computer and this question is chosen for payment.")
-	truefalse11 = models.PositiveIntegerField(verbose_name= "Question 12: Look at the decision table below. Please enter how much money (in whole dollars) the participant will be paid if the true median is 16 minutes and row number 10 is implemented by the computer and this question is chosen for payment.")
+	truefalse10 = models.CurrencyField(verbose_name= "Question 11: Look at the decision table below. Please enter how much money the participant will be paid if the true median is 12 minutes and row number 5 is implemented by the computer and this question is chosen for payment. (Do NOT add your show-up fee!)")
+	truefalse11 = models.CurrencyField(verbose_name= "Question 12: Look at the decision table below. Please enter how much money the participant will be paid if the true median is 16 minutes and row number 10 is implemented by the computer and this question is chosen for payment. (Do NOT add your show-up fee!)")
 
 ######## ACTUAL DATA COLLECTED
 	commitment = models.PositiveIntegerField(min=0,max=35)
@@ -153,7 +153,7 @@ class Player(BasePlayer):
 
 	studentID = models.CharField(verbose_name="What is your Stanford Student ID Number?")
 	sex = models.PositiveIntegerField(verbose_name="What is your sex?", choices=[[0,"Female"], [1,"Male"], [2, "Decline To State or Other"]], widget=widgets.RadioSelect())
-	age = models.PositiveIntegerField(verbose_name="What is your age (in years)?", min=18,max=30)
+	age = models.PositiveIntegerField(verbose_name="What is your age (in years)?", min=18,max=60)
 	gradYear = models.PositiveIntegerField(verbose_name="In what year do you expect to graduate?", min=2018, max=2030)
 	school = models.PositiveIntegerField(verbose_name="In what school is your degree program (or expected degree program)?", choices=[[1, "School of Business"],[2, "School of Eath Sciences"], [3,"School of Education"],[4, "School of Engineering"], [5,"School of Humanities & Sciences"], [6,"School of Law"], [7,"School of Medicine"], [8 ,"Unknown"]], widget=widgets.RadioSelect())
 	econMajor= models.BooleanField(verbose_name="Are you an economics major?",choices=[[1, 'Yes'],[0, 'No']],widget=widgets.RadioSelect())
