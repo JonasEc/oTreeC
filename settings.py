@@ -113,11 +113,15 @@ SESSION_CONFIG_DEFAULTS = {
 
 SESSION_CONFIGS = [
     {
-        'name': 'Conformity16',
+        'name': 'Conformity',
         'display_name': 'Experiment',
-        'num_demo_participants': 18,
+        'num_demo_participants': 16,
         'app_sequence': ['conformity'],
-    },
+        'perGroup': 16,
+        'public' : False,
+        'extraDonationTreat' : True,
+        'noFeedback' : False,
+    }#,
     # {
     #     'name': 'Conformity14',
     #     'display_name': 'Experiment',
@@ -131,7 +135,7 @@ SESSION_CONFIGS = [
     #     'app_sequence': ['conformity'],
     # },
     # {
-    #     'name': 'Conformity18',
+    #     'name': 'Conformity2',
     #     'display_name': 'Experiment',
     #     'num_demo_participants': 2,
     #     'app_sequence': ['conformity'],

@@ -5,6 +5,9 @@ from otree.api import (
     Currency as c, currency_range
 )
 
+
+from django.conf import settings
+
 import os
 import random	 
 import numpy as np
@@ -31,13 +34,16 @@ class Constants(BaseConstants):
 
 ### Base constants
 	name_in_url = 'Experiment'
-	players_per_group = 18
+	players_per_group = settings.SESSION_CONFIGS[0].get('perGroup')
 	num_rounds = len(charities)
 
 ### TREATMENT:
-	public = False
-	extraDonationTreat = True
-	noFeedback = False
+	public = settings.SESSION_CONFIGS[0].get('public')
+	extraDonationTreat = settings.SESSION_CONFIGS[0].get('extraDonation')
+	noFeedback = settings.SESSION_CONFIGS[0].get('noFeedback')
+	# public = False
+	# extraDonationTreat = True
+	# noFeedback = False
 	numberunderstandingquestions = 11
 	accuracy = 1
 
@@ -66,9 +72,7 @@ class Subsession(BaseSubsession):
 
 #### PAYOFF RANDOMISATION:
 	def creating_session(self):
-		pl = self.get_players()
-		self.session.vars["NumPlayers"] = len(pl)
-		selectedPlayer = random.randint(1,len(pl))	
+		selectedPlayer = random.randint(1,Constants.players_per_group)	
 		self.session.vars["selectedPlayer"] = selectedPlayer
 
 		self.session.vars["selectedRound"] = random.randint(1, Constants.num_rounds)
@@ -127,7 +131,7 @@ class Player(BasePlayer):
 		for player in self.get_others_in_group():
 			commits.append(player.commitment)
 		commits = sorted(commits)
-		self.medianCommitment = commits[ceil(self.session.vars.get("NumPlayers") /2)-1]
+		self.medianCommitment = commits[ceil(Constants.players_per_group /2)-1]
 		return self.medianCommitment
 
 	def commitWait(self):
