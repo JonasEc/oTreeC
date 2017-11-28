@@ -164,6 +164,8 @@ class Player(BasePlayer):
 	selectedRound = models.PositiveIntegerField()
 	selectedIncentive = models.PositiveIntegerField()
 
+	charityDonation = models.CurrencyField()
+
 	def makePartIntoField(self):
 		self.selectedPlayer = self.session.vars["selectedPlayer"]
 		self.selectedRound = self.session.vars["selectedRound"]
@@ -207,7 +209,6 @@ class Player(BasePlayer):
 				self.charityDonation = c(0)
 
 			else:
-				self.participant.vars["charityDonation"] = Constants.extraDonation
 				self.charityDonation = Constants.extraDonation
 				bonus3 = c(0)
 				self.participant.vars["outcomeCharityOwn"] = True
