@@ -201,7 +201,7 @@ class Player(BasePlayer):
 				bonus2 = Constants.right_side_amounts[randomVar]
 			bonus1 = c(0)
 
-		if self.session.vars.get("extraDonationTreat"):
+		if self.session.config.get("extraDonationTreat"):
 			randomRow = random.randint(0,len(Constants.right_side_amounts_charity)-1)
 			if Constants.right_side_amounts_charity[randomRow] > self.participant.vars.get("DonationAmount"):
 				bonus3 = Constants.right_side_amounts_charity[randomRow]
